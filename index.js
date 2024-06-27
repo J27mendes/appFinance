@@ -1,4 +1,4 @@
-import { PostgresHelper } from './src/db/podtgres/helper.js'
+import { PostgresHelper } from './src/db/postgres/helper.js'
 import express from 'express'
 import dotenv from 'dotenv'
 

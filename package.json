@@ -9,7 +9,8 @@
     "postinstall": "npx husky install",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "migrations": "node src/db/postgres/migrations/exec.js"
   },
   "keywords": [],
   "author": "",
