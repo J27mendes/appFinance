@@ -9,10 +9,8 @@ export class CreateUserUseCase {
 
     //gerar ID do usuario
     const userId = uuidv4()
-
     //criptografar a senha
     const hashedPassword = await bcrypt.hash(createUserParams.password, 10)
-
     //inserir o usuario no banco de dados
     const user = {
       ...createUserParams,
@@ -22,8 +20,8 @@ export class CreateUserUseCase {
     // chamar o repositorio
     const postgresCreateUserRepository = new PostgresCreateUserRepository()
 
-    const createUser = await postgresCreateUserRepository.execute(user)
+    const createdUser = await postgresCreateUserRepository.execute(user)
 
-    return createUser
+    return createdUser
   }
 }
