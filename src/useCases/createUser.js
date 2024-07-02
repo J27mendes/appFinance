@@ -5,8 +5,6 @@ import { PostgresCreateUserRepository } from '../repositories/postgres/createUse
 
 export class CreateUserUseCase {
   async execute(createUserParams) {
-    //TODO: verificar se o email ja esta em uso
-
     //gerar ID do usuario
     const userId = uuidv4()
     //criptografar a senha
