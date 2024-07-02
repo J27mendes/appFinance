@@ -12,6 +12,13 @@ export const created = (body) => {
   }
 }
 
+export const ok = (body) => {
+  return {
+    statusCode: 200,
+    body,
+  }
+}
+
 export const serverError = () => {
   return {
     statusCode: 500,
