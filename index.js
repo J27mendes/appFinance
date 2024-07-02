@@ -18,8 +18,6 @@ app.post('/api/users', async (request, response) => {
 app.get('/api/users/:userId', async (request, response) => {
   const getUserByIdController = new GetUserByIdController()
 
-  request.params.userId
-
   const { statusCode, body } = await getUserByIdController.execute(request)
 
   response.status(statusCode).send(body)

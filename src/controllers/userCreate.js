@@ -1,7 +1,7 @@
 import { CreateUserUseCase } from '../useCases/createUser.js'
-import { PostgresCompareEmail } from '../repositories/postgres/compareEmail.js'
 import validator from 'validator'
 import { badRequest, created, serverError } from './helpers.js'
+import { EmailExistsError } from '../errors/user.js'
 
 export class CreateUserController {
   async execute(httpRequest) {
@@ -21,15 +21,6 @@ export class CreateUserController {
       if (passwordIsValid) {
         return badRequest({ message: 'Password must be at least 6 characters' })
       }
-      // Verificar se o email já está em uso
-      const postgresCompareEmail = new PostgresCompareEmail()
-      const emailExistsResult = await postgresCompareEmail.execute(params.email)
-      const emailExists = emailExistsResult[0].exists
-      if (emailExists) {
-        return badRequest({
-          message: 'Email already in use. Please choose another one.',
-        })
-      }
 
       const emailIsValid = validator.isEmail(params.email)
 
@@ -44,6 +35,9 @@ export class CreateUserController {
       const createdUser = await createUserUseCase.execute(params)
       return created({ createdUser })
     } catch (error) {
+      if (error instanceof EmailExistsError) {
+        return badRequest({ message: error.message })
+      }
       return serverError(error)
     }
   }

@@ -1,5 +1,5 @@
-import { GetUserByIdUseCase } from '../useCases/getUserById'
-import { badRequest, ok, serverError } from './helpers'
+import { GetUserByIdUseCase } from '../useCases/getUserById.js'
+import { badRequest, ok, serverError } from './helpers.js'
 import validator from 'validator'
 
 export class GetUserByIdController {
