@@ -11,7 +11,7 @@ export class UpdateUserUseCase {
         updateUserParams.email,
       )
 
-      if (emailExists) {
+      if (emailExists && emailExists.id !== userId) {
         throw new EmailExistsError(updateUserParams.email)
       }
     }
