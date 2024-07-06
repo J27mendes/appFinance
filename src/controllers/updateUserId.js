@@ -1,25 +1,32 @@
-import { badRequest, ok, serverError } from './helpers.js'
-import validator from 'validator'
 import { EmailExistsError } from '../errors/user.js'
-import { UpdateUserUseCase } from '../useCases/updateUser.js'
+import { UpdateUserUseCase } from '../useCases/index.js'
+import {
+  badRequest,
+  ok,
+  serverError,
+  checkIfEmailIsValid,
+  checkIfIdIsValid,
+  checkIfPasswordIsValid,
+  emailIsAlreadyInUseResponse,
+  invalidIdResponse,
+  invalidPasswordResponse,
+} from './helpers/index.js'
 
-export class UpdateUserControler {
+export class UpdateUserController {
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId
 
-      const isIdValid = validator.isUUID(userId)
+      const isIdValid = checkIfIdIsValid(userId)
 
       if (!isIdValid) {
-        return badRequest({
-          message: 'The provided Id is not valid.',
-        })
+        return invalidIdResponse()
       }
-      const updateUserParams = httpRequest.body
+      const params = httpRequest.body
 
       const allowedFields = ['first_name', 'last_name', 'email', 'password']
 
-      const someFieldsIsNotAllowed = Object.keys(updateUserParams).some(
+      const someFieldsIsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       )
 
@@ -29,29 +36,22 @@ export class UpdateUserControler {
         })
       }
 
-      if (updateUserParams.password) {
-        const passwordIsNotValid = updateUserParams.password.length < 6
-        if (passwordIsNotValid) {
-          return badRequest({
-            message: 'Password must be at least 6 characters',
-          })
+      if (params.password) {
+        const passwordIsValid = checkIfPasswordIsValid(params.password)
+        if (!passwordIsValid) {
+          return invalidPasswordResponse()
         }
       }
 
-      if (updateUserParams.email) {
-        const emailIsValid = validator.isEmail(updateUserParams.email)
+      if (params.email) {
+        const emailIsValid = checkIfEmailIsValid(params.email)
 
         if (!emailIsValid) {
-          return badRequest({
-            message: 'Invalid e-mail. Please provide a valid one.',
-          })
+          return emailIsAlreadyInUseResponse()
         }
       }
       const updateUserUseCase = new UpdateUserUseCase()
-      const updatedUser = await updateUserUseCase.execute(
-        userId,
-        updateUserParams,
-      )
+      const updatedUser = await updateUserUseCase.execute(userId, params)
 
       return ok(updatedUser)
     } catch (error) {

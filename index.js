@@ -1,8 +1,10 @@
 import express from 'express'
 import 'dotenv/config.js'
-import { CreateUserController } from './src/controllers/userCreate.js'
-import { GetUserByIdController } from './src/controllers/getUserById.js'
-import { UpdateUserControler } from './src/controllers/updateUserId.js/index.js'
+import {
+  CreateUserController,
+  UpdateUserController,
+  GetUserByIdController,
+} from './src/controllers/index.js'
 
 const app = express()
 
@@ -25,8 +27,8 @@ app.get('/api/users/:userId', async (request, response) => {
 })
 
 app.patch('/api/users/:userId', async (request, response) => {
-  const updateUserControler = new UpdateUserControler()
-  const { statusCode, body } = await updateUserControler.execute(request)
+  const updateUserController = new UpdateUserController()
+  const { statusCode, body } = await updateUserController.execute(request)
   response.status(statusCode).send(body)
 })
 

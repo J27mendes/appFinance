@@ -1,9 +1,10 @@
-import { PostgresCreateUserRepository } from '../repositories/postgres/createUser.js'
-import { PostgresCompareEmail } from '../repositories/postgres/compareEmail.js'
-import { EmailExistsError } from '../errors/user.js'
-import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
-
+import { v4 as uuidv4 } from 'uuid'
+import { EmailExistsError } from '../errors/user.js'
+import {
+  PostgresCreateUserRepository,
+  PostgresCompareEmail,
+} from '../repositories/postgres/index.js'
 export class CreateUserUseCase {
   async execute(createUserParams) {
     const postgresCompareEmail = new PostgresCompareEmail()

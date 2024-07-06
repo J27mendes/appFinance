@@ -1,13 +1,20 @@
-import { CreateUserUseCase } from '../useCases/createUser.js'
-import validator from 'validator'
-import { badRequest, created, serverError } from './helpers.js'
 import { EmailExistsError } from '../errors/user.js'
-
+import { CreateUserUseCase } from '../useCases/index.js'
+import {
+  badRequest,
+  created,
+  serverError,
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+  emailIsAlreadyInUseResponse,
+  invalidPasswordResponse,
+} from './helpers/index.js'
 export class CreateUserController {
   async execute(httpRequest) {
     try {
+      // Verificar se é um objeto JSON válido
       const params = httpRequest.body
-      //validar a requisição (campos obrigatiorios, tamanho de senha e e-mail}
+      //validar a requisição (campos obrigatorios, tamanho de senha e e-mail}
       const requiredFields = ['first_name', 'last_name', 'email', 'password']
 
       for (const field of requiredFields) {
@@ -16,18 +23,16 @@ export class CreateUserController {
         }
       }
 
-      const passwordIsNotValid = params.password.length < 6
+      const passwordIsValid = checkIfPasswordIsValid(params.password)
 
-      if (passwordIsNotValid) {
-        return badRequest({ message: 'Password must be at least 6 characters' })
+      if (!passwordIsValid) {
+        return invalidPasswordResponse()
       }
 
-      const emailIsValid = validator.isEmail(params.email)
+      const emailIsValid = checkIfEmailIsValid(params.email)
 
       if (!emailIsValid) {
-        return badRequest({
-          message: 'Invalid e-mail. Please provide a valid one.',
-        })
+        return emailIsAlreadyInUseResponse()
       }
       //chamar o use case
       const createUserUseCase = new CreateUserUseCase()
