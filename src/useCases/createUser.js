@@ -1,14 +1,13 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
 import { EmailExistsError } from '../errors/user.js'
-import {
-  PostgresCreateUserRepository,
-  PostgresCompareEmail,
-} from '../repositories/postgres/index.js'
 export class CreateUserUseCase {
+  constructor(postgresCompareEmail, postgresCreateUserRepository) {
+    this.postgresCompareEmail = postgresCompareEmail
+    this.postgresCreateUserRepository = postgresCreateUserRepository
+  }
   async execute(createUserParams) {
-    const postgresCompareEmail = new PostgresCompareEmail()
-    const emailExists = await postgresCompareEmail.execute(
+    const emailExists = await this.postgresCompareEmail.execute(
       createUserParams.email,
     )
     if (emailExists) {
@@ -24,10 +23,8 @@ export class CreateUserUseCase {
       id: userId,
       password: hashedPassword,
     }
-    // chamar o repositorio
-    const postgresCreateUserRepository = new PostgresCreateUserRepository()
 
-    const createdUser = await postgresCreateUserRepository.execute(user)
+    const createdUser = await this.postgresCreateUserRepository.execute(user)
 
     return createdUser
   }

@@ -7,13 +7,21 @@ import {
 } from './src/controllers/index.js'
 import { PostgresGetUserByIdRepository } from './src/repositories/postgres/getUserById.js'
 import { GetUserByIdUseCase } from './src/useCases/getUserById.js'
+import { CreateUserUseCase } from './src/useCases/createUser.js'
+import { PostgresCompareEmail } from './src/repositories/postgres/compareEmail.js'
 
 const app = express()
 
 app.use(express.json())
 
 app.post('/api/users', async (request, response) => {
-  const createUserController = new CreateUserController()
+  const postgresCompareEmail = new PostgresCompareEmail()
+  const postgresCreateUserRepository = new postgresCreateUserRepository()
+  const createUserUseCase = new CreateUserUseCase(
+    postgresCompareEmail,
+    postgresCreateUserRepository,
+  )
+  const createUserController = new CreateUserController(createUserUseCase)
 
   const { statusCode, body } = await createUserController.execute(request)
 
