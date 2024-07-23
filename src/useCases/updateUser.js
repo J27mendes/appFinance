@@ -1,13 +1,14 @@
 import bcrypt from 'bcrypt'
 import { EmailExistsError } from '../errors/user.js'
-import { PostgresCompareEmail } from '../repositories/postgres/compareEmail.js'
-import { PostgresUpdateUserRepository } from '../repositories/postgres/updateUser.js'
 
 export class UpdateUserUseCase {
+  constructor(postgresCompareEmail, postgresUpdateUserRepository) {
+    this.postgresCompareEmail = postgresCompareEmail
+    this.postgresUpdateUserRepository = postgresUpdateUserRepository
+  }
   async execute(userId, updateUserParams) {
     if (updateUserParams.email) {
-      const postgresCompareEmail = new PostgresCompareEmail()
-      const emailExists = await postgresCompareEmail.execute(
+      const emailExists = await this.postgresCompareEmail.execute(
         updateUserParams.email,
       )
 
@@ -21,8 +22,10 @@ export class UpdateUserUseCase {
       const hashedPassword = await bcrypt.hash(updateUserParams.password, 10)
       user.password = hashedPassword
     }
-    const postgresUpdateUserRepository = new PostgresUpdateUserRepository()
-    const updateUser = await postgresUpdateUserRepository.execute(userId, user)
+    const updateUser = await this.postgresUpdateUserRepository.execute(
+      userId,
+      user,
+    )
 
     return updateUser
   }

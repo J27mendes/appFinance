@@ -1,5 +1,4 @@
 import { EmailExistsError } from '../errors/user.js'
-//import { UpdateUserUseCase } from '../useCases/index.js'
 import {
   badRequest,
   ok,
