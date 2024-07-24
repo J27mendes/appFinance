@@ -16,5 +16,5 @@ export const checkIfEmailIsValid = (email) => validator.isEmail(email)
 
 export const checkIfIdIsValid = (id) => validator.isUUID(id)
 
-export const userNotFoundResponse = () =>
-  notFound({ message: 'User not found.' })
+export const userNotFoundResponse = (id) =>
+  notFound({ message: `User with ${id} not found.` })

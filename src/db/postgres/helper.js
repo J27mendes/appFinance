@@ -46,7 +46,6 @@ export class CreateUserController {
       const createUser = await CreateUserUseCase.execute()
 
       return {
-        //retornar a resposta para o usuario (status code)
         statusCode: 201,
         body: createUser,
       }
