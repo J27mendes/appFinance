@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "migrations": "node src/db/postgres/migrations/exec.js",
-    "start:dev": "node --watch index.js"
+    "start:dev": "node index.js"
   },
   "keywords": [],
   "author": "",
