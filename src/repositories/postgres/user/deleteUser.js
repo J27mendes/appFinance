@@ -1,5 +1,5 @@
-import { PostgresHelper } from '../../db/postgres/helper.js'
-import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { PostgresHelper } from '../../../db/postgres/helper.js'
+import { UserNotFoundError } from '../../../errors/userNotFoundError.js'
 
 export class PostgresDeleteUserRepository {
   async execute(userId) {
