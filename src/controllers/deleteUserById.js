@@ -4,7 +4,8 @@ import {
   userNotFoundResponse,
   ok,
   serverError,
-} from './helpers/index.js' // Importe seus helpers conforme necessário
+  checkIfEmailIsValid,
+} from './helpers/index.js'
 
 export class DeleteUserController {
   constructor(deleteUserUseCase) {
@@ -14,20 +15,22 @@ export class DeleteUserController {
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId
-      // Verificar se o ID é válido (exemplo de validação)
-      if (!userId || typeof userId !== 'string') {
+
+      const isIdValid = checkIfEmailIsValid(httpRequest.userId)
+
+      if (!userId || typeof userId !== 'string' || !isIdValid) {
         return invalidIdResponse()
       }
 
       const deletedUser = await this.deleteUserUseCase.execute(userId)
 
-      return ok(deletedUser) // Retorna a resposta de sucesso
+      return ok(deletedUser)
     } catch (error) {
       if (error instanceof UserNotFoundError) {
-        return userNotFoundResponse(httpRequest.params.userId) // Retorna resposta de usuário não encontrado
+        return userNotFoundResponse(httpRequest.params.userId)
       }
       console.error('Error in delete user controller:', error)
-      return serverError() // Retorna resposta de erro genérico
+      return serverError()
     }
   }
 }

@@ -52,7 +52,6 @@ export class UpdateUserController {
           return emailIsAlreadyInUseResponse()
         }
       }
-      //const updateUserUseCase = new UpdateUserUseCase()
       const updatedUser = await this.updateUserUseCase.execute(userId, params)
 
       return ok(updatedUser)

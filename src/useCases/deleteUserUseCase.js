@@ -11,9 +11,9 @@ export class DeleteUserUseCase {
       return deletedUser
     } catch (error) {
       if (error instanceof UserNotFoundError) {
-        throw error // Lançar erro específico de usuário não encontrado
+        throw error
       }
-      throw new Error('Failed to delete user') // Outros erros genéricos
+      throw new Error('Failed to delete user')
     }
   }
 }
