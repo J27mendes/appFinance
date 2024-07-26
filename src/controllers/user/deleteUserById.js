@@ -1,11 +1,11 @@
-import { UserNotFoundError } from '../errors/userNotFoundError.js'
+import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 import {
   invalidIdResponse,
   userNotFoundResponse,
   ok,
   serverError,
   checkIfEmailIsValid,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class DeleteUserController {
   constructor(deleteUserUseCase) {
