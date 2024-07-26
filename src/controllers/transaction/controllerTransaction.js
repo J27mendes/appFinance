@@ -1,11 +1,19 @@
-import validator from 'validator'
 import {
-  badRequest,
   checkIfIdIsValid,
   created,
   invalidIdResponse,
   serverError,
 } from '../helpers'
+import {
+  requiredFieldsIsMissingResponse,
+  validateRequestFields,
+} from '../helpers/validation'
+import {
+  checkIfAmountIsValid,
+  checkIfTypeIsValid,
+  invalidAmountResponse,
+  invalidTypeResponse,
+} from '../helpers/transaction'
 
 export class CreateTransactionController {
   constructor(createTransactionUseCase) {
@@ -17,10 +25,11 @@ export class CreateTransactionController {
 
       const requiredFields = ['id', 'user_id', 'name', 'date', 'amount', 'type']
 
-      for (const field of requiredFields) {
-        if (!params[field] || params[field].trim().length === 0) {
-          return badRequest({ message: `Missing param: ${field}` })
-        }
+      const { ok: requiredFieldsWereProvided, missingField } =
+        validateRequestFields(params, requiredFields)
+
+      if (!requiredFieldsWereProvided) {
+        return requiredFieldsIsMissingResponse(missingField)
       }
 
       const userIdIsValid = checkIfIdIsValid(params.user_id)
@@ -28,32 +37,18 @@ export class CreateTransactionController {
         return invalidIdResponse()
       }
 
-      if (params.amount <= 0) {
-        return badRequest({
-          message: `The amount must be greater than 0.`,
-        })
-      }
-
-      const amountIsValid = validator.isCurrency(params.amount.toString(), {
-        digits_after_decimal: [2],
-        allow_negatives: false,
-        decimal_separator: '.',
-      })
+      const amountIsValid = checkIfAmountIsValid(params.amount)
 
       if (!amountIsValid) {
-        return badRequest({
-          message: `The amount is not a valid currency.`,
-        })
+        return invalidAmountResponse()
       }
 
       const type = params.type.trim().toUpperCase()
 
-      const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
+      const typeIsValid = checkIfTypeIsValid(type)
 
       if (!typeIsValid) {
-        return badRequest({
-          message: `The type must be EARNING, EXPENSE or INVESTMENT.`,
-        })
+        return invalidTypeResponse()
       }
 
       const transaction = await this.createTransactionUseCase.execute({
