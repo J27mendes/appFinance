@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
-import { EmailExistsError } from '../errors/user.js'
+import { EmailExistsError } from '../../errors/user.js'
 export class CreateUserUseCase {
   constructor(postgresCompareEmail, postgresCreateUserRepository) {
     this.postgresCompareEmail = postgresCompareEmail

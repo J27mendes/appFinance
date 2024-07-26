@@ -1,4 +1,4 @@
-import { UserNotFoundError } from '../errors/userNotFoundError.js'
+import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 export class DeleteUserUseCase {
   constructor(deleteUserRepository) {
