@@ -4,7 +4,7 @@ import {
   userNotFoundResponse,
   ok,
   serverError,
-  checkIfEmailIsValid,
+  checkIfIdIsValid,
 } from '../helpers/index.js'
 
 export class DeleteUserController {
@@ -16,9 +16,9 @@ export class DeleteUserController {
     try {
       const userId = httpRequest.params.userId
 
-      const isIdValid = checkIfEmailIsValid(httpRequest.userId)
+      const isIdValid = checkIfIdIsValid(userId)
 
-      if (!userId || typeof userId !== 'string' || !isIdValid) {
+      if (!isIdValid) {
         return invalidIdResponse()
       }
 

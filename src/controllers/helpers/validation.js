@@ -9,7 +9,7 @@ export const invalidIdResponse = () =>
   badRequest({ message: 'The provided id is not valid.' })
 
 export const requiredFieldsIsMissingResponse = (field) => {
-  badRequest({
+  return badRequest({
     message: `The field ${field} is required.`,
   })
 }
@@ -17,6 +17,7 @@ export const requiredFieldsIsMissingResponse = (field) => {
 export const checkIfIsString = (value) => typeof value === 'string'
 
 export const validateRequestFields = (params, requiredFields) => {
+  console.log(`apos validateRequestFields, ${params} , e ${requiredFields} fim`)
   for (const field of requiredFields) {
     const fieldIsMissing = !params[field]
     const fieldIsEmpty =
@@ -26,6 +27,9 @@ export const validateRequestFields = (params, requiredFields) => {
       })
 
     if (fieldIsMissing || fieldIsEmpty) {
+      console.log(
+        `Field check - field: ${field}, fieldIsMissing: ${fieldIsMissing}, fieldIsEmpty: ${fieldIsEmpty}`,
+      )
       return {
         missingField: false,
         ok: false,
