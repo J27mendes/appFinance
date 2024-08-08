@@ -6,6 +6,10 @@ import {
   makePostUser,
   makeUpdateUserById,
 } from './src/factores/controllers/users.js'
+import {
+  makeGetTransactionByUserIdController,
+  makeCreateTransactionController,
+} from './src/factores/controllers/transactions.js'
 
 const app = express()
 
@@ -39,6 +43,23 @@ app.delete('/api/users/:userId', async (request, response) => {
 
   const { statusCode, body } = await deleteUserController.execute(request)
 
+  response.status(statusCode).send(body)
+})
+
+app.get('/api/transactions', async (request, response) => {
+  const getTransactionsByUserIdController =
+    makeGetTransactionByUserIdController()
+
+  const { statusCode, body } =
+    await getTransactionsByUserIdController.execute(request)
+
+  response.status(statusCode).send(body)
+})
+
+app.post('/api/transactions', async (request, response) => {
+  const createTransactionController = makeCreateTransactionController()
+  const { statusCode, body } =
+    await createTransactionController.execute(request)
   response.status(statusCode).send(body)
 })
 

@@ -3,17 +3,13 @@ import {
   created,
   invalidIdResponse,
   serverError,
-} from '../helpers'
-import {
   requiredFieldsIsMissingResponse,
   validateRequestFields,
-} from '../helpers/validation'
-import {
   checkIfAmountIsValid,
   checkIfTypeIsValid,
   invalidAmountResponse,
   invalidTypeResponse,
-} from '../helpers/transaction'
+} from '../helpers/index.js'
 
 export class CreateTransactionController {
   constructor(createTransactionUseCase) {
