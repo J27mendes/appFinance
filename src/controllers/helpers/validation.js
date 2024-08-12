@@ -17,19 +17,26 @@ export const requiredFieldsIsMissingResponse = (field) => {
 export const checkIfIsString = (value) => typeof value === 'string'
 
 export const validateRequestFields = (params, requiredFields) => {
-  console.log(`apos validateRequestFields, ${params} , e ${requiredFields} fim`)
   for (const field of requiredFields) {
-    const fieldIsMissing = !params[field]
-    const fieldIsEmpty =
-      checkIfIdIsValid(params[field]) &&
-      validator.isEmpty(params[field], {
-        ignore_whitespace: true,
-      })
+    const value = params[field]
+
+    const fieldIsMissing = value === undefined || value === null
+
+    let fieldIsEmpty = false
+
+    if (field === 'id' || field === 'user_id') {
+      fieldIsEmpty = !checkIfIdIsValid(value)
+    } else if (typeof value === 'string') {
+      fieldIsEmpty = validator.isEmpty(value, { ignore_whitespace: true })
+    } else if (typeof value === 'number') {
+      fieldIsEmpty = isNaN(value)
+    }
 
     if (fieldIsMissing || fieldIsEmpty) {
       console.log(
         `Field check - field: ${field}, fieldIsMissing: ${fieldIsMissing}, fieldIsEmpty: ${fieldIsEmpty}`,
       )
+
       return {
         missingField: false,
         ok: false,

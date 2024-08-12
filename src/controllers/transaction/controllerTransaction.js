@@ -19,7 +19,7 @@ export class CreateTransactionController {
     try {
       const params = httpRequest.body
 
-      const requiredFields = ['id', 'user_id', 'name', 'date', 'amount', 'type']
+      const requiredFields = ['user_id', 'name', 'date', 'amount', 'type']
 
       const { ok: requiredFieldsWereProvided, missingField } =
         validateRequestFields(params, requiredFields)

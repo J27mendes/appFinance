@@ -46,7 +46,7 @@ app.delete('/api/users/:userId', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.get('/api/transactions', async (request, response) => {
+app.get('/api/transactions/:userId', async (request, response) => {
   const getTransactionsByUserIdController =
     makeGetTransactionByUserIdController()
 
