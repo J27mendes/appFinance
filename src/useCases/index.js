@@ -5,3 +5,4 @@ export * from './user/deleteUserUseCase.js'
 
 export * from './transaction/createTransaction.js'
 export * from './transaction/getTransactionByIdUseCase.js'
+export * from './transaction/updateTransactionUseCase.js'

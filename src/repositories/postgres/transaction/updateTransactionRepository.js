@@ -17,7 +17,7 @@ export class PostgresUpdateTransactionRepository {
         WHERE id = $${updateValues.length}
         RETURNING *
         `
-    const updateUser = await PostgresHelper(updateQuery, updateValues)
+    const updateUser = await PostgresHelper.query(updateQuery, updateValues)
 
     return updateUser[0]
   }
