@@ -57,7 +57,7 @@ app.get('/api/transactions/:userId', async (request, response) => {
   response.status(statusCode).send(body)
 })
 
-app.post('/api/transactions', async (request, response) => {
+app.post('/api/transactions/:userId', async (request, response) => {
   const createTransactionController = makeCreateTransactionController()
   const { statusCode, body } =
     await createTransactionController.execute(request)

@@ -39,6 +39,8 @@ export class CreateTransactionController {
         return invalidAmountResponse()
       }
 
+      const parsedAmount = parseFloat(params.amount)
+
       const type = params.type.trim().toUpperCase()
 
       const typeIsValid = checkIfTypeIsValid(type)
@@ -49,6 +51,7 @@ export class CreateTransactionController {
 
       const transaction = await this.createTransactionUseCase.execute({
         ...params,
+        amount: parsedAmount,
         type,
       })
 
