@@ -2,6 +2,7 @@ import express from 'express'
 import 'dotenv/config.js'
 import {
   makeDeleteUserById,
+  makeGetUserBalanceController,
   makeGetUserById,
   makePostUser,
   makeUpdateUserById,
@@ -28,6 +29,14 @@ app.get('/api/users/:userId', async (request, response) => {
   const getUserByIdController = makeGetUserById()
 
   const { statusCode, body } = await getUserByIdController.execute(request)
+
+  response.status(statusCode).send(body)
+})
+
+app.get('/api/users/:userId/balance', async (request, response) => {
+  const getUserBalanceController = makeGetUserBalanceController()
+
+  const { statusCode, body } = await getUserBalanceController.execute(request)
 
   response.status(statusCode).send(body)
 })
