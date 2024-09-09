@@ -5,16 +5,13 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL
 );
-
 --create types
 DO $$
     BEGIN
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'transaction_type') THEN
             CREATE TYPE transaction_type AS ENUM ('EARNING', 'EXPENSE', 'INVESTIMENT');
     END IF;
-END$$
-
-
+END $$;
 CREATE TABLE IF NOT EXISTS transactions(
     ID uuid PRIMARY KEY,
     user_id uuid REFERENCES users(ID) ON DELETE CASCADE NOT NULL,
