@@ -19,18 +19,19 @@ export const createTransactionSchema = z.object({
     }),
   date: z
     .string({
-      required_error: 'Dte is required.',
+      required_error: 'Date is required,',
     })
     .datetime({
       message: 'Date must be a valid date.',
     }),
   type: z.enum(['EXPENSE', 'EARNING', 'INVESTMENT'], {
     errorMap: () => ({
-      message: 'Type must be EXPENSE, EARNING or INVESTMENT.',
+      message: 'Type must be EXPENSE, EARNING, INVESTMENT.',
     }),
   }),
   amount: z
     .number({
+      required_error: 'Amount is required',
       invalid_type_error: 'Amount must be a number.',
     })
     .min(1, {
