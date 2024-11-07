@@ -12,7 +12,7 @@ export const checkIfAmountIsValid = (amount) => {
 }
 
 export const checkIfTypeIsValid = (type) =>
-  ['EARNING', 'EXPENSE', 'INVESTIMENT'].includes(type)
+  ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
 
 export const invalidAmountResponse = () =>
   badRequest({

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { prisma } from '../../../../prisma/prisma'
+import { prisma } from '../../../../prisma/prisma.js'
 
 export class PostgresDeleteTransactionRepository {
   async execute(transactionId) {
