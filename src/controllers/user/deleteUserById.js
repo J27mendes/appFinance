@@ -5,6 +5,7 @@ import {
   ok,
   serverError,
   checkIfIdIsValid,
+  badRequest,
 } from '../helpers/index.js'
 
 export class DeleteUserController {
@@ -24,7 +25,16 @@ export class DeleteUserController {
 
       const deletedUser = await this.deleteUserUseCase.execute(userId)
 
-      return ok(deletedUser)
+      if (deletedUser === null) {
+        return badRequest({
+          message: 'User not found',
+        })
+      }
+
+      return ok({
+        message: 'User deleted successfully',
+        transaction: deletedUser,
+      })
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse(httpRequest.params.userId)
