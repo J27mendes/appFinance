@@ -1,7 +1,19 @@
 import globals from 'globals'
-import pluginJs from '@eslint/js'
 
-export default [
-  { languageOptions: { globals: globals.node } },
-  pluginJs.configs.recommended,
-]
+export default {
+  configs: {
+    languageOptions: { globals: globals.node },
+    recommended: {
+      name: 'example/recommended',
+      rules: {
+        'no-unused-vars': 'warn',
+      },
+    },
+    strict: {
+      name: 'example/strict',
+      rules: {
+        'no-unused-vars': 'error',
+      },
+    },
+  },
+}
