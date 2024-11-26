@@ -13,7 +13,7 @@ export class CreateUserController {
       await createUserSchema.parseAsync(params)
 
       const createdUser = await this.createUserUseCase.execute(params)
-      return created({ createdUser })
+      return created(createdUser)
     } catch (error) {
       if (error instanceof ZodError) {
         return badRequest({
