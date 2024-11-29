@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 import {
   invalidIdResponse,
   userNotFoundResponse,
