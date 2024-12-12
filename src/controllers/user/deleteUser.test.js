@@ -4,7 +4,7 @@ import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 describe('DeleteUserController', () => {
   class deleteUserUseCaseStub {
-    execute() {
+    async execute() {
       return {
         id: faker.string.uuid(),
         first_name: faker.person.firstName(),

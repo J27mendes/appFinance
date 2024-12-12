@@ -5,7 +5,7 @@ import { undefined } from 'zod'
 
 describe('Create User Controller', () => {
   class CreateUserControllerStub {
-    execute(user) {
+    async execute(user) {
       return user
     }
   }
