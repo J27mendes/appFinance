@@ -90,7 +90,7 @@ describe('UpdateUserController', () => {
     expect(response.statusCode).toBe(400)
   })
 
-  it('should return 400 when an unllowed field is email', async () => {
+  it('should return 400 when an unllowed field is provided', async () => {
     //arrange
     const { sut } = makeSut()
 
@@ -105,5 +105,20 @@ describe('UpdateUserController', () => {
 
     //assert
     expect(response.statusCode).toBe(400)
+  })
+
+  it('should return 500 if UpdateUserUseCase throws with generic error', async () => {
+    //arrange
+    const { sut, updateUserUseCase } = makeSut()
+
+    jest.spyOn(updateUserUseCase, 'execute').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    //act
+    const result = await sut.execute(httpRequest)
+
+    //assert
+    expect(result.statusCode).toBe(500)
   })
 })
