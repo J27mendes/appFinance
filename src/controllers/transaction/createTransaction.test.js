@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+import { ZodError } from 'zod'
 import { CreateTransactionController } from './controllerTransaction.js'
 
 describe('Create Transaction Controller', () => {
@@ -195,5 +196,33 @@ describe('Create Transaction Controller', () => {
 
     //assert
     expect(response.statusCode).toBe(500)
+  })
+
+  it('should return 400 if createTransactionUseCase throws', async () => {
+    //arrange
+    const { sut, createTransactionUseCase } = makeSut()
+    const validationError = new ZodError([
+      {
+        path: ['field'],
+        message: 'Validation error message',
+        code: 'invalid_type',
+      },
+    ])
+
+    jest
+      .spyOn(createTransactionUseCase, 'execute')
+      .mockImplementationOnce(() => {
+        throw validationError
+      })
+
+    //act
+    const result = await sut.execute({
+      body: {
+        ...baseHttpRequest.undefined,
+      },
+    })
+
+    //assert
+    expect(result.statusCode).toBe(400)
   })
 })
