@@ -40,7 +40,7 @@ describe('Create User Controller', () => {
     expect(result.body).not.toBeNull()
   })
 
-  it('Should return 400 if first_name is not providesd', async () => {
+  it('Should return 400 if first_name is not provided', async () => {
     //arrange
     const { sut } = makeSut()
 
@@ -53,7 +53,7 @@ describe('Create User Controller', () => {
     expect(result.statusCode).toBe(400)
   })
 
-  it('Should return 400 if last_name is not providesd', async () => {
+  it('Should return 400 if last_name is not provided', async () => {
     //arrange
     const { sut } = makeSut()
 
@@ -92,7 +92,7 @@ describe('Create User Controller', () => {
     expect(result.statusCode).toBe(400)
   })
 
-  it('Should return 400 if password is not providesd', async () => {
+  it('Should return 400 if password is not provided', async () => {
     //arrange
     const { sut } = makeSut()
 

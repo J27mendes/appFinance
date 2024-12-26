@@ -41,7 +41,7 @@ describe('DeleteUserController', () => {
     expect(result.statusCode).toBe(200)
   })
 
-  it('Should return 400 if id is invalid', async () => {
+  it('Should return 400 if id is not invalid', async () => {
     //arrange
     const { sut } = makeSut()
 
@@ -66,7 +66,7 @@ describe('DeleteUserController', () => {
     expect(result.statusCode).toBe(404)
   })
 
-  it('Shuld return 500 if DeleteUserUseCase', async () => {
+  it('Shuld return 500 if DeleteUserUseCase an throws', async () => {
     //arrange
     const { sut, deleteUserUseCase } = makeSut()
     jest.spyOn(deleteUserUseCase, 'execute').mockImplementationOnce(() => {
