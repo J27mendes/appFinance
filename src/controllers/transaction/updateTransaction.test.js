@@ -46,4 +46,17 @@ describe('Update Transaction Controller', () => {
     //assert
     expect(response.statusCode).toBe(200)
   })
+
+  it('should return 400 when id transaction is invalid', async () => {
+    //arrange
+    const { sut } = makeSut()
+
+    //act
+    const response = await sut.execute({
+      params: { transactionId: 'id_invalid' },
+    })
+
+    //assert
+    expect(response.statusCode).toBe(400)
+  })
 })
