@@ -24,22 +24,24 @@ describe('Update Transaction Controller', () => {
     }
   }
 
+  const baseHttpRequest = {
+    params: {
+      transactionId: faker.string.uuid(),
+    },
+    body: {
+      name: faker.commerce.productName(),
+      date: faker.date.anytime().toISOString(),
+      type: 'EXPENSE',
+      amount: Number(faker.finance.amount()),
+    },
+  }
+
   it('should return 200 when updating transaction successfully', async () => {
     //arrange
     const { sut } = makeSut()
 
     //act
-    const response = await sut.execute({
-      params: {
-        transactionId: faker.string.uuid(),
-      },
-      body: {
-        name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
-        type: 'EXPENSE',
-        amount: Number(faker.finance.amount()),
-      },
-    })
+    const response = await sut.execute(baseHttpRequest)
 
     //assert
     expect(response.statusCode).toBe(200)
