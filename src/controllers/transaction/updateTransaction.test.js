@@ -87,4 +87,21 @@ describe('Update Transaction Controller', () => {
     //assert
     expect(response.statusCode).toBe(400)
   })
+
+  it('should return 400 when type provided is not correct', async () => {
+    //arrange
+    const { sut } = makeSut()
+
+    //act
+    const response = await sut.execute({
+      ...baseHttpRequest,
+      body: {
+        ...baseHttpRequest.body,
+        type: 'TYPE_IS_NOT_CORRECT                                                        ',
+      },
+    })
+
+    //assert
+    expect(response.statusCode).toBe(400)
+  })
 })
