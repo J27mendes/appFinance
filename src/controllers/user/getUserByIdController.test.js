@@ -32,9 +32,7 @@ describe('GetUserByIdController', () => {
     //arrange
     const { sut } = makeSut()
     //act
-    const result = await sut.execute({
-      params: { userId: faker.string.uuid() },
-    })
+    const result = await sut.execute(httpRequest)
     //assert
     expect(result.statusCode).toBe(200)
   })
