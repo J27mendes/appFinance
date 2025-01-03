@@ -35,6 +35,21 @@ describe('Get Transaction By User Id Controller', () => {
     expect(response.statusCode).toBe(200)
   })
 
+  it('should call getUserByIdUseCase witch correct params', async () => {
+    //arrange
+    const { sut, getUserByIdUseCase } = makeSut()
+    const executeSpy = jest.spyOn(getUserByIdUseCase, 'execute')
+    const userId = faker.string.uuid()
+
+    //act
+    await sut.execute({
+      query: { userId },
+    })
+
+    //assert
+    expect(executeSpy).toHaveBeenCalledWith(userId)
+  })
+
   it('should return 400 when missing UserId params', async () => {
     //arrange
     const { sut } = makeSut()
