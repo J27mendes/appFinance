@@ -72,6 +72,18 @@ describe('Create Transaction Controller', () => {
     expect(response.statusCode).toBe(201)
   })
 
+  it('should call CreateTransactionUseCase witch correct params', async () => {
+    //arrange
+    const { sut, createTransactionUseCase } = makeSut()
+    const executeSpy = jest.spyOn(createTransactionUseCase, 'execute')
+
+    //act
+    await sut.execute(baseHttpRequest)
+
+    //assert
+    expect(executeSpy).toHaveBeenCalledWith(baseHttpRequest.body)
+  })
+
   it('should return 400 when missing user_id', async () => {
     //arrange
     const { sut } = makeSut()
