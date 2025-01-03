@@ -27,9 +27,8 @@ export class GetTransactionByUserIdController {
         return invalidIdResponse()
       }
 
-      const transactions = await this.getTransactionByUserIdUseCase.execute({
-        userId: userId,
-      })
+      const transactions =
+        await this.getTransactionByUserIdUseCase.execute(userId)
 
       return ok(transactions)
     } catch (error) {
