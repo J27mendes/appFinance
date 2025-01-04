@@ -51,9 +51,11 @@ export const makePostUser = () => {
 export const makeUpdateUserById = () => {
   const postgresCompareEmail = new PostgresCompareEmail()
   const postgresUpdateUserRepository = new PostgresUpdateUserRepository()
+  const passwordHashedAdapter = new PasswordHasherAdapter()
   const updateUserUseCase = new UpdateUserUseCase(
     postgresCompareEmail,
     postgresUpdateUserRepository,
+    passwordHashedAdapter,
   )
   const updateUserController = new UpdateUserController(updateUserUseCase)
   return updateUserController
