@@ -53,7 +53,7 @@ describe('DeleteUserController', () => {
     expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
   })
 
-  it('Should return 400 if id is not invalid', async () => {
+  it('Should return 400 if id is not valid', async () => {
     //arrange
     const { sut } = makeSut()
 
@@ -62,6 +62,19 @@ describe('DeleteUserController', () => {
 
     //assert
     expect(result.statusCode).toBe(400)
+  })
+
+  it('should return 400 when id is not found', async () => {
+    //arrange
+    const { sut, deleteUserUseCase } = makeSut()
+    jest.spyOn(deleteUserUseCase, 'execute').mockResolvedValueOnce(null)
+
+    //act
+    const result = await sut.execute(httpRequest)
+
+    //assert
+    expect(result.statusCode).toBe(400)
+    expect(result.body).toEqual({ message: 'User not found' })
   })
 
   it('Should return 404 id user is not found', async () => {
