@@ -4,11 +4,11 @@ export class UpdateUserUseCase {
   constructor(
     postgresCompareEmail,
     postgresUpdateUserRepository,
-    passwordHashedAdapter,
+    passwordHasherAdapter,
   ) {
     this.postgresCompareEmail = postgresCompareEmail
     this.postgresUpdateUserRepository = postgresUpdateUserRepository
-    this.passwordHashedAdapter = passwordHashedAdapter
+    this.passwordHasherAdapter = passwordHasherAdapter
   }
   async execute(userId, updateUserParams) {
     if (updateUserParams.email) {
@@ -23,7 +23,7 @@ export class UpdateUserUseCase {
     const user = { ...updateUserParams }
 
     if (updateUserParams.password) {
-      const hashedPassword = await this.passwordHashedAdapter.execute(
+      const hashedPassword = await this.passwordHasherAdapter.execute(
         updateUserParams.password,
       )
       user.password = hashedPassword

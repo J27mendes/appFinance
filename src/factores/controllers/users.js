@@ -35,12 +35,12 @@ export const makeGetUserById = () => {
 export const makePostUser = () => {
   const compareEmail = new PostgresCompareEmail()
   const createUserRepository = new PostgresCreateUserRepository()
-  const passwordHashedAdapter = new PasswordHasherAdapter()
+  const passwordHasherAdapter = new PasswordHasherAdapter()
   const idGeneratorAdapter = new IdGeneratorAdapter()
   const createUser = new CreateUserUseCase(
     compareEmail,
     createUserRepository,
-    passwordHashedAdapter,
+    passwordHasherAdapter,
     idGeneratorAdapter,
   )
   const createUserController = new CreateUserController(createUser)
@@ -51,11 +51,11 @@ export const makePostUser = () => {
 export const makeUpdateUserById = () => {
   const postgresCompareEmail = new PostgresCompareEmail()
   const postgresUpdateUserRepository = new PostgresUpdateUserRepository()
-  const passwordHashedAdapter = new PasswordHasherAdapter()
+  const passwordHasherAdapter = new PasswordHasherAdapter()
   const updateUserUseCase = new UpdateUserUseCase(
     postgresCompareEmail,
     postgresUpdateUserRepository,
-    passwordHashedAdapter,
+    passwordHasherAdapter,
   )
   const updateUserController = new UpdateUserController(updateUserUseCase)
   return updateUserController

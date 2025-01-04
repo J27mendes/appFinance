@@ -3,12 +3,12 @@ export class CreateUserUseCase {
   constructor(
     postgresCompareEmail,
     postgresCreateUserRepository,
-    passwordHashedAdapter,
+    passwordHasherAdapter,
     idGeneratorAdapter,
   ) {
     this.postgresCompareEmail = postgresCompareEmail
     this.postgresCreateUserRepository = postgresCreateUserRepository
-    this.passwordHashedAdapter = passwordHashedAdapter
+    this.passwordHasherAdapter = passwordHasherAdapter
     this.idGeneratorAdapter = idGeneratorAdapter
   }
   async execute(createUserParams) {
@@ -21,7 +21,7 @@ export class CreateUserUseCase {
 
     const userId = this.idGeneratorAdapter.execute()
 
-    const hashedPassword = await this.passwordHashedAdapter.execute(
+    const hashedPassword = await this.passwordHasherAdapter.execute(
       createUserParams.password,
     )
 
