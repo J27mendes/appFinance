@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { DeleteUserUseCase } from './deleteUserUseCase'
+import { DeleteUserUseCase } from './deleteUserUseCase.js'
+import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 describe('DeleteUserUseCase', () => {
   const user = {
@@ -47,5 +48,19 @@ describe('DeleteUserUseCase', () => {
 
     //assert
     expect(executeSpy).toHaveBeenCalledWith(userId)
+  })
+
+  it('Should throw UserNotFoundError when user is not found', async () => {
+    //arrange
+    const { sut, deleteUserRepository } = makeSut()
+    const userId = faker.string.uuid()
+    const userNotFoundError = new UserNotFoundError(userId)
+
+    jest
+      .spyOn(deleteUserRepository, 'execute')
+      .mockRejectedValueOnce(userNotFoundError)
+
+    // Act & Assert
+    await expect(sut.execute(userId)).rejects.toThrow(UserNotFoundError)
   })
 })
