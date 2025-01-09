@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { CreateUserUseCase } from './createUser.js'
 import { EmailExistsError } from '../../errors/user.js'
 
-describe('Create User Use Case', () => {
+describe('CreateUserUseCase', () => {
   class GetUserByEmailRepositoryStub {
     async execute() {
       return null
