@@ -73,6 +73,20 @@ describe('UpdateUserUseCase', () => {
     expect(result).toBe(user)
   })
 
+  it('must update the user successfully with email received by updateUserParams.email', async () => {
+    //arrange
+    const { sut, postgresCompareEmail } = makeSut()
+    const postgresCompareEmailSpy = jest.spyOn(postgresCompareEmail, 'execute')
+    const email = faker.internet.email()
+
+    //act
+    const result = await sut.execute(faker.string.uuid(), { email })
+
+    //assert
+    expect(postgresCompareEmailSpy).toHaveBeenCalledWith(email)
+    expect(result).toBe(user)
+  })
+
   it('should update user successfully with password', async () => {
     //arrange
     const { sut } = makeSut()
