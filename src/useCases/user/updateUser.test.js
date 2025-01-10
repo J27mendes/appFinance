@@ -19,7 +19,7 @@ describe('UpdateUserUseCase', () => {
 
   class PasswordHasherAdapter {
     async execute() {
-      return 'hasher_password'
+      return 'hashed_password'
     }
   }
 
@@ -130,5 +130,30 @@ describe('UpdateUserUseCase', () => {
 
     //assert
     await expect(promise).rejects.toThrow(new EmailExistsError(user.email))
+  })
+
+  it('should call UpdateUserRepository with correct params', async () => {
+    //arrange
+    const { sut, postgresUpdateUserRepository } = makeSut()
+    const postgresUpdateUserRepositorySpy = jest.spyOn(
+      postgresUpdateUserRepository,
+      'execute',
+    )
+
+    //act
+    await sut.execute(user.id, {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: user.password,
+    })
+
+    //assert
+    expect(postgresUpdateUserRepositorySpy).toHaveBeenCalledWith(user.id, {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: 'hashed_password',
+    })
   })
 })
