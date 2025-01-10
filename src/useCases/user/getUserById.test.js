@@ -20,6 +20,7 @@ describe('GetUserById', () => {
 
     return { sut, getUserByIdRepository }
   }
+
   it('must ensure that the user id is provided successfully', async () => {
     //arrange
     const { sut } = makeSut()
@@ -29,5 +30,18 @@ describe('GetUserById', () => {
 
     //assert
     expect(result).toEqual(user)
+  })
+
+  it('should call GetUserByIdRepository with correct params', async () => {
+    //arrange
+    const { sut, getUserByIdRepository } = makeSut()
+    const executeSpy = jest.spyOn(getUserByIdRepository, 'execute')
+    const userId = faker.string.uuid()
+
+    //act
+    await sut.execute(userId)
+
+    //assert
+    expect(executeSpy).toHaveBeenCalledWith(userId)
   })
 })
