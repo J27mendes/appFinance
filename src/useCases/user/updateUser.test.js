@@ -193,12 +193,13 @@ describe('UpdateUserUseCase', () => {
       .mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid(), {
+    const userMOck = {
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
       password: user.password,
-    })
+    }
+    const promise = sut.execute(faker.string.uuid(), { userMOck })
 
     //assert
     await expect(promise).rejects.toThrow()
