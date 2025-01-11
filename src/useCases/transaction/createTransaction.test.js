@@ -86,4 +86,16 @@ describe('CreateTransactionUseCase', () => {
     //assert
     expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(transaction.userId)
   })
+
+  it('should call IdGeneratorAdapter', async () => {
+    //arrange
+    const { sut, idGeneratorAdapter } = makeSut()
+    const idGeneratorAdapterSpy = jest.spyOn(idGeneratorAdapter, 'execute')
+
+    //act
+    await sut.execute(transaction)
+
+    //assert
+    expect(idGeneratorAdapterSpy).toHaveBeenCalled()
+  })
 })
