@@ -1,29 +1,37 @@
 import { faker } from '@faker-js/faker'
 import { CreateTransactionUseCase } from './createTransaction'
+import { UserNotFoundError } from '../../errors/userNotFoundError'
 
 describe('CreateTransactionUseCase', () => {
   const transaction = {
-    user_id: faker.string.uuid(),
+    userId: faker.string.uuid(),
     name: faker.commerce.productName(),
     date: faker.date.anytime().toISOString(),
     type: 'EXPENSE',
     amount: Number(faker.finance.amount()),
   }
+
+  const user = {
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password({ length: 7 }),
+  }
   class CreateTransactionRepositoryStub {
-    async execute() {
+    async execute(transaction) {
       return transaction
     }
   }
 
   class GetUserByIdRepositoryStub {
     async execute() {
-      return 'randon_id'
+      return 'random_id'
     }
   }
 
   class IdGeneratorAdapterStub {
     async execute() {
-      return { ...transaction, user_id: faker.string.uuid() }
+      return { ...transaction, id: faker.string.uuid() }
     }
   }
 
@@ -46,14 +54,21 @@ describe('CreateTransactionUseCase', () => {
     }
   }
 
-  it('should returns transaction', async () => {
+  it('should returns transaction succefully', async () => {
     //arrange
-    const { sut } = makeSut()
+    const { sut, idGeneratorAdapter, createTransactionRepository } = makeSut()
+    jest.spyOn(idGeneratorAdapter, 'execute').mockReturnValue('random_id')
+
+    // Mockar o retorno do createTransactionRepository
+    jest.spyOn(createTransactionRepository, 'execute').mockResolvedValue({
+      ...transaction,
+      id: 'random_id',
+    })
 
     //act
     const createTransaction = await sut.execute(transaction)
 
     //assert
-    expect(createTransaction).toEqual(transaction)
+    expect(createTransaction).toEqual({ ...transaction, id: 'random_id' })
   })
 })
