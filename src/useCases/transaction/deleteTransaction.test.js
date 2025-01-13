@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { DeleteTransactionUseCase } from './deleteTransactionUseCase'
+import { UserNotFoundError } from '../../errors/userNotFoundError'
 
 describe('DeleteTransaction', () => {
   const transaction = {
@@ -35,5 +36,20 @@ describe('DeleteTransaction', () => {
 
     //assert
     expect(result).toEqual({ ...transaction, id: transaction.id })
+  })
+
+  it('should the user cannot be found, receive the error UserNotFoundError', async () => {
+    //arrange
+    const { sut, deleteTransactionRepository } = makeSut()
+
+    const transactionId = faker.string.uuid()
+    const userNotFoundError = new UserNotFoundError(transactionId)
+
+    jest
+      .spyOn(deleteTransactionRepository, 'execute')
+      .mockRejectedValueOnce(userNotFoundError)
+
+    // Act & Assert
+    await expect(sut.execute(transactionId)).rejects.toThrow(UserNotFoundError)
   })
 })
