@@ -52,4 +52,18 @@ describe('DeleteTransaction', () => {
     // Act & Assert
     await expect(sut.execute(transactionId)).rejects.toThrow(UserNotFoundError)
   })
+
+  it('Should throw a generic error when deleteTransactionRepository fails unexpectedly', async () => {
+    // Arrange
+    const { sut, deleteTransactionRepository } = makeSut()
+    const userId = faker.string.uuid()
+    const unexpectedError = new Error('Unexpected error')
+
+    jest
+      .spyOn(deleteTransactionRepository, 'execute')
+      .mockRejectedValueOnce(unexpectedError)
+
+    // Act & Assert
+    await expect(sut.execute(userId)).rejects.toThrow('Failed to delete user')
+  })
 })
