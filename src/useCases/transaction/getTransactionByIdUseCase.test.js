@@ -88,4 +88,20 @@ describe('GetTransactionByIdUseCase', () => {
     //assert
     expect(postgresGetTransactionByIdRepositorySpy).toHaveBeenCalledWith(id)
   })
+
+  it('should throw if PostgresGetTransactionByIdRepository throws', async () => {
+    //arrange
+    const { sut, postgresGetTransactionByIdRepository } = makeSut()
+    jest
+      .spyOn(postgresGetTransactionByIdRepository, 'execute')
+      .mockRejectedValueOnce(new Error())
+
+    const id = faker.string.uuid()
+
+    //act
+    const promise = sut.execute(id)
+
+    //assert
+    await expect(promise).rejects.toThrow()
+  })
 })
