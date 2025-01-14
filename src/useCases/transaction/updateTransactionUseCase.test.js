@@ -38,4 +38,20 @@ describe('UpdateTransactionUseCase', () => {
     //assert
     expect(result).toEqual({ transactionId, params })
   })
+
+  it('should throw if UpdateTransactionRepository throws', async () => {
+    //arrange
+    const { sut, updateTransactionRepository } = makeSut()
+    jest
+      .spyOn(updateTransactionRepository, 'execute')
+      .mockRejectedValueOnce(new Error())
+
+    const id = faker.string.uuid()
+
+    //act
+    const promise = sut.execute(id)
+
+    //assert
+    await expect(promise).rejects.toThrow()
+  })
 })
