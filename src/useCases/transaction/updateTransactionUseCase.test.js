@@ -1,20 +1,12 @@
-import { faker } from '@faker-js/faker'
 import { UpdateTransactionUseCase } from './updateTransactionUseCase'
+import { transaction } from '../../tests/fixtures/index'
 
 describe('UpdateTransactionUseCase', () => {
-  const transactionId = faker.string.uuid()
-  const params = {
-    id: faker.string.uuid(),
-    userId: faker.string.uuid(),
-    name: faker.commerce.productName(),
-    date: faker.date.anytime().toISOString(),
-    type: 'EXPENSE',
-    amount: Number(faker.finance.amount()),
-  }
+  const transactionId = transaction.id
 
   class UpdateTransactionRepositoryStub {
-    async execute(transactionId, params) {
-      return { transactionId, params }
+    async execute(transactionId, transaction) {
+      return { transactionId, transaction }
     }
   }
 
@@ -33,10 +25,10 @@ describe('UpdateTransactionUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(transactionId, params)
+    const result = await sut.execute(transactionId, transaction)
 
     //assert
-    expect(result).toEqual({ transactionId, params })
+    expect(result).toEqual({ transactionId, transaction })
   })
 
   it('should throw if UpdateTransactionRepository throws', async () => {
@@ -46,7 +38,7 @@ describe('UpdateTransactionUseCase', () => {
       .spyOn(updateTransactionRepository, 'execute')
       .mockRejectedValueOnce(new Error())
 
-    const id = faker.string.uuid()
+    const id = transaction.id
 
     //act
     const promise = sut.execute(id)
@@ -65,12 +57,12 @@ describe('UpdateTransactionUseCase', () => {
 
     //act
     await sut.execute(transactionId, {
-      amount: params.amount,
+      amount: transaction.amount,
     })
 
     //assert
     expect(updateTransactionRepositorySpy).toHaveBeenCalledWith(transactionId, {
-      amount: params.amount,
+      amount: transaction.amount,
     })
   })
 })

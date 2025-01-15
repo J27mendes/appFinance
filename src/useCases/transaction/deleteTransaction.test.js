@@ -1,19 +1,11 @@
-import { faker } from '@faker-js/faker'
 import { DeleteTransactionUseCase } from './deleteTransactionUseCase'
 import { UserNotFoundError } from '../../errors/userNotFoundError'
+import { transaction, user } from '../../tests/fixtures/index'
 
 describe('DeleteTransaction', () => {
-  const transaction = {
-    id: faker.string.uuid(),
-    userId: faker.string.uuid(),
-    name: faker.commerce.productName(),
-    date: faker.date.anytime().toISOString(),
-    type: 'EXPENSE',
-    amount: Number(faker.finance.amount()),
-  }
   class DeleteTransactionRepositoryStub {
-    async execute(transactionId) {
-      return { ...transaction, id: transactionId }
+    async execute() {
+      return { transaction }
     }
   }
 
@@ -32,17 +24,17 @@ describe('DeleteTransaction', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(transaction.id)
+    const result = await sut.execute(transaction)
 
     //assert
-    expect(result).toEqual({ ...transaction, id: transaction.id })
+    expect(result).toEqual({ transaction })
   })
 
   it('should the user cannot be found, receive the error UserNotFoundError', async () => {
     //arrange
     const { sut, deleteTransactionRepository } = makeSut()
 
-    const transactionId = faker.string.uuid()
+    const transactionId = transaction.id
     const userNotFoundError = new UserNotFoundError(transactionId)
 
     jest
@@ -56,7 +48,7 @@ describe('DeleteTransaction', () => {
   it('Should throw a generic error when deleteTransactionRepository fails unexpectedly', async () => {
     // Arrange
     const { sut, deleteTransactionRepository } = makeSut()
-    const userId = faker.string.uuid()
+    const userId = user.id
     const unexpectedError = new Error('Unexpected error')
 
     jest

@@ -1,18 +1,10 @@
-import { faker } from '@faker-js/faker'
 import { CreateTransactionUseCase } from './createTransaction.js'
 import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { transaction } from '../../tests/fixtures/index.js'
 
 describe('CreateTransactionUseCase', () => {
-  const transaction = {
-    userId: faker.string.uuid(),
-    name: faker.commerce.productName(),
-    date: faker.date.anytime().toISOString(),
-    type: 'EXPENSE',
-    amount: Number(faker.finance.amount()),
-  }
-
   class CreateTransactionRepositoryStub {
-    async execute(transaction) {
+    async execute() {
       return transaction
     }
   }
@@ -25,7 +17,7 @@ describe('CreateTransactionUseCase', () => {
 
   class IdGeneratorAdapterStub {
     async execute() {
-      return { ...transaction, id: faker.string.uuid() }
+      return { transaction }
     }
   }
 

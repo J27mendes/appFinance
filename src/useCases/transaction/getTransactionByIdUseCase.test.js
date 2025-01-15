@@ -1,16 +1,8 @@
-import { faker } from '@faker-js/faker'
 import { GetTransactionByIdUseCase } from './getTransactionByIdUseCase.js'
 import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { user } from '../../tests/fixtures/index.js'
 
 describe('GetTransactionByIdUseCase', () => {
-  const user = {
-    id: faker.string.uuid(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({ length: 7 }),
-  }
-
   class PostgresGetTransactionByIdRepository {
     async execute() {
       return []
@@ -39,7 +31,7 @@ describe('GetTransactionByIdUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid())
+    const result = await sut.execute(user.id)
 
     //assert
     expect(result).toEqual([])
@@ -49,7 +41,7 @@ describe('GetTransactionByIdUseCase', () => {
     //arrange
     const { sut, getUserIdRepository } = makeSut()
     jest.spyOn(getUserIdRepository, 'execute').mockResolvedValueOnce(null)
-    const id = faker.string.uuid()
+    const id = user.id
 
     //act
     const promise = sut.execute(id)
@@ -63,7 +55,7 @@ describe('GetTransactionByIdUseCase', () => {
     const { sut, getUserIdRepository } = makeSut()
     const getUserIdRepositorySpy = jest.spyOn(getUserIdRepository, 'execute')
 
-    const id = faker.string.uuid()
+    const id = user.id
 
     //act
     await sut.execute(id)
@@ -80,7 +72,7 @@ describe('GetTransactionByIdUseCase', () => {
       'execute',
     )
 
-    const id = faker.string.uuid()
+    const id = user.id
 
     //act
     await sut.execute(id)
@@ -96,7 +88,7 @@ describe('GetTransactionByIdUseCase', () => {
       .spyOn(postgresGetTransactionByIdRepository, 'execute')
       .mockRejectedValueOnce(new Error())
 
-    const id = faker.string.uuid()
+    const id = user.id
 
     //act
     const promise = sut.execute(id)
@@ -112,7 +104,7 @@ describe('GetTransactionByIdUseCase', () => {
       .spyOn(getUserIdRepository, 'execute')
       .mockRejectedValueOnce(new Error())
 
-    const id = faker.string.uuid()
+    const id = user.id
 
     //act
     const promise = sut.execute(id)
