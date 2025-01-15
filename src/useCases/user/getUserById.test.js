@@ -1,14 +1,7 @@
-import { faker } from '@faker-js/faker'
 import { GetUserByIdUseCase } from './getUserById'
+import { user } from '../../tests/fixtures/index'
 
 describe('GetUserById', () => {
-  const user = {
-    id: faker.string.uuid(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({ length: 7 }),
-  }
   class GetUserByIdRepositoryStub {
     async execute() {
       return user
@@ -26,7 +19,7 @@ describe('GetUserById', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid())
+    const result = await sut.execute(user.id)
 
     //assert
     expect(result).toEqual(user)
@@ -36,13 +29,12 @@ describe('GetUserById', () => {
     //arrange
     const { sut, getUserByIdRepository } = makeSut()
     const executeSpy = jest.spyOn(getUserByIdRepository, 'execute')
-    const userId = faker.string.uuid()
 
     //act
-    await sut.execute(userId)
+    await sut.execute(user.id)
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(userId)
+    expect(executeSpy).toHaveBeenCalledWith(user.id)
   })
 
   it('should throw if GetUserByIdRepository throws', async () => {
@@ -51,7 +43,7 @@ describe('GetUserById', () => {
     jest.spyOn(getUserByIdRepository, 'execute').mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid())
+    const promise = sut.execute(user.id)
 
     //assert
     await expect(promise).rejects.toThrow()

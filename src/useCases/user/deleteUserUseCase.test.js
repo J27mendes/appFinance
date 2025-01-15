@@ -1,15 +1,8 @@
-import { faker } from '@faker-js/faker'
 import { DeleteUserUseCase } from './deleteUserUseCase.js'
 import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { user } from '../../tests/fixtures/index.js'
 
 describe('DeleteUserUseCase', () => {
-  const user = {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({ length: 7 }),
-  }
-
   class DeleteUserRepositoyStub {
     async execute() {
       return user
@@ -31,7 +24,7 @@ describe('DeleteUserUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const deletedUser = await sut.execute(faker.string.uuid())
+    const deletedUser = await sut.execute(user.id)
 
     //assert
     expect(deletedUser).toEqual(user)
@@ -41,7 +34,7 @@ describe('DeleteUserUseCase', () => {
     //arrange
     const { sut, deleteUserRepository } = makeSut()
     const executeSpy = jest.spyOn(deleteUserRepository, 'execute')
-    const userId = faker.string.uuid()
+    const userId = user.id
 
     //act
     await sut.execute(userId)
@@ -53,7 +46,7 @@ describe('DeleteUserUseCase', () => {
   it('Should throw UserNotFoundError when user is not found', async () => {
     //arrange
     const { sut, deleteUserRepository } = makeSut()
-    const userId = faker.string.uuid()
+    const userId = user.id
     const userNotFoundError = new UserNotFoundError(userId)
 
     jest
@@ -67,7 +60,7 @@ describe('DeleteUserUseCase', () => {
   it('Should throw a generic error when deleteUserRepository fails unexpectedly', async () => {
     // Arrange
     const { sut, deleteUserRepository } = makeSut()
-    const userId = faker.string.uuid()
+    const userId = user.id
     const unexpectedError = new Error('Unexpected error')
 
     jest

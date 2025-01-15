@@ -1,14 +1,9 @@
-import { faker } from '@faker-js/faker'
 import { GetUserBalanceUseCase } from './getUserBalanceUseCase'
 import { UserNotFoundError } from '../../errors/userNotFoundError'
+import { userBalance } from '../../tests/fixtures/index'
+import { user } from '../../tests/fixtures/index'
 
 describe('GetUserBalanceUseCase', () => {
-  const userBalance = {
-    earnings: faker.finance.amount(),
-    expenses: faker.finance.amount(),
-    investments: faker.finance.amount(),
-    balance: faker.finance.amount(),
-  }
   class GetUserBalanceRepositoryStub {
     async execute() {
       return userBalance
@@ -16,12 +11,7 @@ describe('GetUserBalanceUseCase', () => {
   }
   class GetUserByIdRepositoryStub {
     async execute() {
-      return {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password({ length: 7 }),
-      }
+      return user
     }
   }
 
@@ -41,7 +31,7 @@ describe('GetUserBalanceUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid())
+    const result = await sut.execute(user.id)
 
     //assert
     expect(result).toEqual(userBalance)
@@ -51,45 +41,42 @@ describe('GetUserBalanceUseCase', () => {
     //arange
     const { sut, getUserByIdRepository } = makeSut()
     jest.spyOn(getUserByIdRepository, 'execute').mockResolvedValue(null)
-    const userId = faker.string.uuid()
 
     //act
-    const promise = sut.execute(userId)
+    const promise = sut.execute(user.id)
 
     //assert
-    await expect(promise).rejects.toThrow(new UserNotFoundError(userId))
+    await expect(promise).rejects.toThrow(new UserNotFoundError(user.id))
   })
 
   it('should call GetUserByIdRepository with correct params', async () => {
     //arrange
     const { sut, getUserByIdRepository } = makeSut()
-    const userId = faker.string.uuid()
     const getUserByIdRepositorySpy = jest.spyOn(
       getUserByIdRepository,
       'execute',
     )
 
     //act
-    await sut.execute(userId)
+    await sut.execute(user.id)
 
     //assert
-    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId)
+    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(user.id)
   })
 
   it('should call GetUserBalanceRepository with correct params', async () => {
     //arrange
     const { sut, getUserBalanceRepository } = makeSut()
-    const userId = faker.string.uuid()
     const getUserBalanceRepositorySpy = jest.spyOn(
       getUserBalanceRepository,
       'execute',
     )
 
     //act
-    await sut.execute(userId)
+    await sut.execute(user.id)
 
     //assert
-    expect(getUserBalanceRepositorySpy).toHaveBeenCalledWith(userId)
+    expect(getUserBalanceRepositorySpy).toHaveBeenCalledWith(user.id)
   })
 
   it('should throw if GetUserByIdRepository throws', async () => {
@@ -98,7 +85,7 @@ describe('GetUserBalanceUseCase', () => {
     jest.spyOn(getUserByIdRepository, 'execute').mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid())
+    const promise = sut.execute(user.id)
 
     //assert
     await expect(promise).rejects.toThrow()
@@ -112,7 +99,7 @@ describe('GetUserBalanceUseCase', () => {
       .mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid())
+    const promise = sut.execute(user.id)
 
     //assert
     await expect(promise).rejects.toThrow()

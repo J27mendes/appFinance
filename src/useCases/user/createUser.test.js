@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker'
 import { CreateUserUseCase } from './createUser.js'
 import { EmailExistsError } from '../../errors/user.js'
+import { user } from '../../tests/fixtures/index.js'
 
 describe('CreateUserUseCase', () => {
   class GetUserByEmailRepositoryStub {
@@ -10,7 +10,7 @@ describe('CreateUserUseCase', () => {
   }
 
   class CreateUserRepositoryStub {
-    async execute(user) {
+    async execute() {
       return user
     }
   }
@@ -25,13 +25,6 @@ describe('CreateUserUseCase', () => {
     execute() {
       return 'generator_id'
     }
-  }
-
-  const user = {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({ length: 7 }),
   }
 
   const makeSut = () => {

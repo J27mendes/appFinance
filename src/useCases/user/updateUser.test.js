@@ -1,16 +1,9 @@
 import { faker } from '@faker-js/faker'
 import { UpdateUserUseCase } from './updateUser'
 import { EmailExistsError } from '../../errors/user'
+import { user } from '../../tests/fixtures/index'
 
 describe('UpdateUserUseCase', () => {
-  const user = {
-    id: faker.string.uuid(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({ length: 7 }),
-  }
-
   class PostgresCompareEmailStub {
     async execute() {
       return null
@@ -52,7 +45,7 @@ describe('UpdateUserUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid(), {
+    const result = await sut.execute(user.id, {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
     })
@@ -66,8 +59,8 @@ describe('UpdateUserUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid(), {
-      email: faker.internet.email(),
+    const result = await sut.execute(user.id, {
+      email: user.email,
     })
 
     //assert
@@ -78,10 +71,10 @@ describe('UpdateUserUseCase', () => {
     //arrange
     const { sut, postgresCompareEmail } = makeSut()
     const postgresCompareEmailSpy = jest.spyOn(postgresCompareEmail, 'execute')
-    const email = faker.internet.email()
+    const email = user.email
 
     //act
-    const result = await sut.execute(faker.string.uuid(), { email })
+    const result = await sut.execute(user.id, { email })
 
     //assert
     expect(postgresCompareEmailSpy).toHaveBeenCalledWith(email)
@@ -93,8 +86,8 @@ describe('UpdateUserUseCase', () => {
     const { sut } = makeSut()
 
     //act
-    const result = await sut.execute(faker.string.uuid(), {
-      password: faker.internet.password({ length: 7 }),
+    const result = await sut.execute(user.id, {
+      password: user.password,
     })
 
     //assert
@@ -108,10 +101,10 @@ describe('UpdateUserUseCase', () => {
       passwordHasherAdapter,
       'execute',
     )
-    const password = faker.internet.password()
+    const password = user.password
 
     //act
-    const result = await sut.execute(faker.string.uuid(), { password })
+    const result = await sut.execute(user.id, { password })
 
     //assert
     expect(passwordHasherAdapterSpy).toHaveBeenCalledWith(password)
@@ -142,17 +135,14 @@ describe('UpdateUserUseCase', () => {
 
     //act
     await sut.execute(user.id, {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      password: user.password,
+      ...user,
+      id: undefined,
     })
 
     //assert
     expect(postgresUpdateUserRepositorySpy).toHaveBeenCalledWith(user.id, {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
+      ...user,
+      id: undefined,
       password: 'hashed_password',
     })
   })
@@ -163,7 +153,7 @@ describe('UpdateUserUseCase', () => {
     jest.spyOn(postgresCompareEmail, 'execute').mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid(), {
+    const promise = sut.execute(user.id, {
       email: user.email,
     })
 
@@ -177,7 +167,7 @@ describe('UpdateUserUseCase', () => {
     jest.spyOn(passwordHasherAdapter, 'execute').mockRejectedValue(new Error())
 
     //act
-    const promise = sut.execute(faker.string.uuid(), {
+    const promise = sut.execute(user.id, {
       password: user.password,
     })
 
@@ -194,10 +184,8 @@ describe('UpdateUserUseCase', () => {
 
     //act
     const userMOck = {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      password: user.password,
+      ...user,
+      id: undefined,
     }
     const promise = sut.execute(faker.string.uuid(), { userMOck })
 

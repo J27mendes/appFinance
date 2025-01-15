@@ -3,13 +3,13 @@ import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 import { user } from '../../tests/fixtures/index.js'
 
 describe('GetTransactionByIdUseCase', () => {
-  class PostgresGetTransactionByIdRepository {
+  class PostgresGetTransactionByIdRepositoryStub {
     async execute() {
       return []
     }
   }
 
-  class GetUserIdRepository {
+  class GetUserIdRepositoryStub {
     async execute() {
       return user
     }
@@ -17,8 +17,8 @@ describe('GetTransactionByIdUseCase', () => {
 
   const makeSut = () => {
     const postgresGetTransactionByIdRepository =
-      new PostgresGetTransactionByIdRepository()
-    const getUserIdRepository = new GetUserIdRepository()
+      new PostgresGetTransactionByIdRepositoryStub()
+    const getUserIdRepository = new GetUserIdRepositoryStub()
     const sut = new GetTransactionByIdUseCase(
       postgresGetTransactionByIdRepository,
       getUserIdRepository,
