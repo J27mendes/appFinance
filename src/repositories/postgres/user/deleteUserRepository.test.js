@@ -1,5 +1,5 @@
 import { prisma } from '../../../../prisma/prisma'
-import { user } from '../../../tests/fixtures'
+import { user } from '../../../tests/fixtures/index.js'
 import { PostgresDeleteUserRepository } from './deleteUser'
 
 describe('PostgresDeleteUserRepository', () => {
@@ -31,5 +31,17 @@ describe('PostgresDeleteUserRepository', () => {
         id: user.id,
       },
     })
+  })
+
+  it('should handle errors gracefully', async () => {
+    //arrange
+    const sut = new PostgresDeleteUserRepository()
+    jest.spyOn(prisma.user, 'delete').mockRejectedValueOnce(new Error())
+
+    //act
+    const result = await sut.execute(user)
+
+    //assert
+    expect(result).toBeNull()
   })
 })
