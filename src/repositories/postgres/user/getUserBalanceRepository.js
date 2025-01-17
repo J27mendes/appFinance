@@ -30,7 +30,7 @@ export class PostgresGetUserBalanceRepository {
     } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'INVESTIMENT',
+        type: 'INVESTMENT',
       },
       _sum: {
         amount: true,
