@@ -66,4 +66,43 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(result.investments.toString()).toBe('5600')
     expect(result.balance.toString()).toBe('8600')
   })
+
+  it('should call Prisma with correct params', async () => {
+    //arrange
+    const sut = new PostgresGetUserBalanceRepository()
+    const primsaSpy = jest.spyOn(prisma.transaction, 'aggregate')
+
+    //act
+    await sut.execute(fakeUser.id)
+
+    //assert
+    expect(primsaSpy).toHaveBeenCalledTimes(3)
+    expect(primsaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: 'EARNING',
+      },
+      _sum: {
+        amount: true,
+      },
+    })
+    expect(primsaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: 'EXPENSE',
+      },
+      _sum: {
+        amount: true,
+      },
+    })
+    expect(primsaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: 'INVESTMENT',
+      },
+      _sum: {
+        amount: true,
+      },
+    })
+  })
 })
