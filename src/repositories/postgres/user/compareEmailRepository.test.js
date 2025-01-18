@@ -1,0 +1,17 @@
+import { prisma } from '../../../../prisma/prisma'
+import { user as fakeUser } from '../../../tests/fixtures'
+import { PostgresCompareEmail } from './compareEmail'
+
+describe('PostgresCompareEmail', () => {
+  it('should get user by email on db', async () => {
+    //arrange
+    const user = await prisma.user.create({ data: fakeUser })
+    const sut = new PostgresCompareEmail()
+
+    //act
+    const result = await sut.execute(user.email)
+
+    //assert
+    expect(result).toStrictEqual(user)
+  })
+})
