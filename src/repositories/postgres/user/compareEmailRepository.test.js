@@ -1,5 +1,5 @@
 import { prisma } from '../../../../prisma/prisma'
-import { user as fakeUser, user } from '../../../tests/fixtures'
+import { user as fakeUser } from '../../../tests/fixtures'
 import { PostgresCompareEmail } from './compareEmail'
 
 describe('PostgresCompareEmail', () => {
@@ -9,7 +9,7 @@ describe('PostgresCompareEmail', () => {
     const sut = new PostgresCompareEmail()
 
     //act
-    const result = await sut.execute(user.email)
+    const result = await sut.execute(fakeUser.email)
 
     //assert
     expect(result).toStrictEqual(user)
@@ -37,7 +37,7 @@ describe('PostgresCompareEmail', () => {
     jest.spyOn(prisma.user, 'findUnique').mockRejectedValueOnce(new Error())
 
     //act
-    const promise = sut.execute(user)
+    const promise = sut.execute(fakeUser.email)
 
     //assert
     await expect(promise).rejects.toThrow()
