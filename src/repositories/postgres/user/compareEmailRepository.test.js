@@ -14,4 +14,20 @@ describe('PostgresCompareEmail', () => {
     //assert
     expect(result).toStrictEqual(user)
   })
+
+  it('should call Prisma with correct params', async () => {
+    //arrange
+    const sut = new PostgresCompareEmail()
+    const primsaSpy = jest.spyOn(prisma.user, 'findUnique')
+
+    //act
+    await sut.execute(fakeUser.email)
+
+    //assert
+    expect(primsaSpy).toHaveBeenCalledWith({
+      where: {
+        email: fakeUser.email,
+      },
+    })
+  })
 })
