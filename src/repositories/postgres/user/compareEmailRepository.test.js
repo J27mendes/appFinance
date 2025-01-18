@@ -1,5 +1,5 @@
 import { prisma } from '../../../../prisma/prisma'
-import { user as fakeUser } from '../../../tests/fixtures'
+import { user as fakeUser, user } from '../../../tests/fixtures'
 import { PostgresCompareEmail } from './compareEmail'
 
 describe('PostgresCompareEmail', () => {
@@ -29,5 +29,17 @@ describe('PostgresCompareEmail', () => {
         email: fakeUser.email,
       },
     })
+  })
+
+  it('should throws if Prisma throw', async () => {
+    //arrange
+    const sut = new PostgresCompareEmail()
+    jest.spyOn(prisma.user, 'findUnique').mockRejectedValueOnce(new Error())
+
+    //act
+    const promise = sut.execute(user)
+
+    //assert
+    await expect(promise).rejects.toThrow()
   })
 })
