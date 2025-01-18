@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { prisma, TransactionType } from '../../../../prisma/prisma'
+import { prisma } from '../../../../prisma/prisma'
+import { TransactionType } from '@prisma/client'
 import { user as fakeUser } from '../../../tests/fixtures/index.js'
 import { PostgresGetUserBalanceRepository } from './getUserBalanceRepository.js'
 
@@ -14,42 +15,42 @@ describe('PostgresGetUserBalanceRepository', () => {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 8500,
-          type: 'EARNING',
+          type: TransactionType.EARNING,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 8200,
-          type: 'EARNING',
+          type: TransactionType.EARNING,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 1000,
-          type: 'EXPENSE',
+          type: TransactionType.EXPENSE,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 1500,
-          type: 'EXPENSE',
+          type: TransactionType.EXPENSE,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 2300,
-          type: 'INVESTMENT',
+          type: TransactionType.INVESTMENT,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
           date: faker.date.recent(),
           amount: 3300,
-          type: 'INVESTMENT',
+          type: TransactionType.INVESTMENT,
           user_id: user.id,
         },
       ],
@@ -80,7 +81,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(primsaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'EARNING',
+        type: TransactionType.EARNING,
       },
       _sum: {
         amount: true,
@@ -89,7 +90,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(primsaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'EXPENSE',
+        type: TransactionType.EXPENSE,
       },
       _sum: {
         amount: true,
@@ -98,7 +99,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(primsaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: 'INVESTMENT',
+        type: TransactionType.INVESTMENT,
       },
       _sum: {
         amount: true,
