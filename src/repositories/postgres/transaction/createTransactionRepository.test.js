@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import { prisma } from '../../../../prisma/prisma'
+import { prisma } from '../../../../prisma/prisma.js'
 import { transaction, user } from '../../../tests/fixtures/index.js'
-import { PostgresCreateTransactionRepository } from './createTransaction'
+import { PostgresCreateTransactionRepository } from './createTransaction.js'
 
 describe('PostgresCreateTransactionReposioty', () => {
   it('should create a transaction on db', async () => {

@@ -4,7 +4,7 @@ import { transaction, user } from '../../../tests/fixtures'
 import { PostgresDeleteTransactionRepository } from './deleteTransaction'
 
 describe('PostgresDeleteTransactionRepository', () => {
-  it('should delete a tranxation on db', async () => {
+  it('should delete a transation on db', async () => {
     //arrange
     await prisma.user.create({ data: user })
     await prisma.transaction.create({
