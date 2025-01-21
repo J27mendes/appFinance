@@ -74,6 +74,8 @@ describe('PostgresDeleteTransactionRepository', () => {
     const promise = sut.execute(transaction.id)
 
     //assert
-    expect(promise).rejects.toThrow(new TransactionNotFoundError())
+    expect(promise).rejects.toThrow(
+      new TransactionNotFoundError(transaction.id),
+    )
   })
 })
