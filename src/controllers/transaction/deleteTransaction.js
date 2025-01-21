@@ -1,11 +1,12 @@
-import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { TransactionNotFoundError } from '../../errors/transactionNotFoundError.js'
+
 import {
   badRequest,
   checkIfIdIsValid,
   invalidIdResponse,
   ok,
   serverError,
-  userNotFoundResponse,
+  transactionNotFoundResponse,
 } from '../helpers/index.js'
 
 export class DeleteTransactionController {
@@ -36,8 +37,8 @@ export class DeleteTransactionController {
         transaction: deletedTransaction,
       })
     } catch (error) {
-      if (error instanceof UserNotFoundError) {
-        return userNotFoundResponse(httpRequest.params.transactionId)
+      if (error instanceof TransactionNotFoundError) {
+        return transactionNotFoundResponse(httpRequest.params.transactionId)
       }
       console.error('Error in delete user controller:', error)
       return serverError()
