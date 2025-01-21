@@ -5,10 +5,6 @@ import {
   invalidIdResponse,
   serverError,
   badRequest,
-  checkIfAmountIsValid,
-  checkIfTypeIsValid,
-  invalidTypeResponse,
-  invalidAmountResponse,
   ok,
 } from '../helpers/index.js'
 
