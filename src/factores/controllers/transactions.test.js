@@ -13,4 +13,10 @@ describe('Transaction Controller Factories', () => {
       CreateTransactionController,
     )
   })
+
+  it('should return a valid GetTransactionByUserIdController instance', () => {
+    expect(makeGetTransactionByUserIdController()).toBeInstanceOf(
+      GetTransactionByUserIdController,
+    )
+  })
 })
