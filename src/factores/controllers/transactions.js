@@ -1,5 +1,5 @@
 import { IdGeneratorAdapter } from '../../adapters/index.js'
-import { UpdateTransactionController } from '../../controllers/index.js'
+import { UpdateTransactionController } from '../../controllers/transaction/updateTransactionController.js'
 import { CreateTransactionController } from '../../controllers/transaction/controllerTransaction.js'
 import { DeleteTransactionController } from '../../controllers/transaction/deleteTransaction.js'
 import { GetTransactionByUserIdController } from '../../controllers/transaction/getTransactionUserByIdController.js'
