@@ -33,7 +33,9 @@ describe('PostgresUpdateTransactionRepository', () => {
     expect(dayjs(result.date).daysInMonth()).toBe(
       dayjs(params.date).daysInMonth(),
     )
-    expect(dayjs(result.date).month()).toBe(dayjs(params.date).month())
+    expect(dayjs(result.date).format('YYYY-MM')).toBe(
+      dayjs(params.date).format('YYYY-MM'),
+    )
     expect(dayjs(result.date).year()).toBe(dayjs(params.date).year())
   })
 
