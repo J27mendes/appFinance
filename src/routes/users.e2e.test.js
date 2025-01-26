@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { app } from '../app.js'
 import { user } from '../tests/fixtures/index.js'
 import { faker } from '@faker-js/faker'
+import { TransactionType } from '@prisma/client'
 
 const request = supertest
 
@@ -68,6 +69,48 @@ describe('User Routers E2E tests', () => {
     expect(response.body).toEqual({
       message: 'User deleted successfully',
       transaction: createdUser,
+    })
+  })
+
+  it('GET /api/users/:userId/balance should returns 200 and correct balance', async () => {
+    const { body: createdUser } = await request(app)
+      .post('/api/users')
+      .send({ ...user, id: undefined })
+
+    await request(app).post('/api/transactions').send({
+      user_id: createdUser.id,
+      name: faker.commerce.productName(),
+      date: faker.date.anytime().toISOString(),
+      type: TransactionType.EARNING,
+      amount: 10000,
+    })
+
+    await request(app).post('/api/transactions').send({
+      user_id: createdUser.id,
+      name: faker.commerce.productName(),
+      date: faker.date.anytime().toISOString(),
+      type: TransactionType.EXPENSE,
+      amount: 2000,
+    })
+
+    await request(app).post('/api/transactions').send({
+      user_id: createdUser.id,
+      name: faker.commerce.productName(),
+      date: faker.date.anytime().toISOString(),
+      type: TransactionType.INVESTMENT,
+      amount: 1000,
+    })
+
+    const response = await request(app).get(
+      `/api/users/${createdUser.id}/balance`,
+    )
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      earnings: '10000',
+      expenses: '2000',
+      investments: '1000',
+      balance: '7000',
     })
   })
 })
