@@ -1,4 +1,5 @@
 import { EmailExistsError } from '../../errors/user.js'
+import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 import { updateUserSchena } from '../../schemas/user.js'
 import {
   badRequest,
@@ -6,6 +7,7 @@ import {
   serverError,
   checkIfIdIsValid,
   invalidIdResponse,
+  userNotFoundResponse,
 } from '../helpers/index.js'
 import { ZodError } from 'zod'
 
@@ -37,6 +39,9 @@ export class UpdateUserController {
       }
       if (error instanceof EmailExistsError) {
         return badRequest({ message: error.message })
+      }
+      if (error instanceof UserNotFoundError) {
+        return userNotFoundResponse()
       }
       console.error(error)
       return serverError()
