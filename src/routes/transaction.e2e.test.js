@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { user, transaction } from '../tests/fixtures/index.js'
 import { app } from '../app.js'
 import { TransactionType } from '@prisma/client'
+
 describe('Transaction Routes E2E Tests', () => {
   const request = supertest
 
@@ -78,6 +79,13 @@ describe('Transaction Routes E2E Tests', () => {
     const response = await request(app)
       .patch(`/api/transactions/${transaction.id}`)
       .send({ amount: 100, type: TransactionType.INVESTMENT })
+    expect(response.status).toBe(404)
+  })
+
+  it('DELETE /api/transaction/:transactionId should return 404 when deleting a non existing transaction', async () => {
+    const response = await request(app).delete(
+      `/api/transactions/${transaction.id}`,
+    )
     expect(response.status).toBe(404)
   })
 })
