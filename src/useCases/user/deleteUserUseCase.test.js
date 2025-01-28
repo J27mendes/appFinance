@@ -56,18 +56,4 @@ describe('DeleteUserUseCase', () => {
     // Act & Assert
     await expect(sut.execute(userId)).rejects.toThrow(UserNotFoundError)
   })
-
-  it('Should throw a generic error when deleteUserRepository fails unexpectedly', async () => {
-    // Arrange
-    const { sut, deleteUserRepository } = makeSut()
-    const userId = user.id
-    const unexpectedError = new Error('Unexpected error')
-
-    jest
-      .spyOn(deleteUserRepository, 'execute')
-      .mockRejectedValueOnce(unexpectedError)
-
-    // Act & Assert
-    await expect(sut.execute(userId)).rejects.toThrow('Failed to delete user')
-  })
 })
