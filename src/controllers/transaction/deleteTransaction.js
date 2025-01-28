@@ -40,7 +40,7 @@ export class DeleteTransactionController {
       if (error instanceof TransactionNotFoundError) {
         return transactionNotFoundResponse(httpRequest.params.transactionId)
       }
-      console.error('Error in delete user controller:', error)
+
       return serverError()
     }
   }
