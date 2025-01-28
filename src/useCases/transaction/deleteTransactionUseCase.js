@@ -1,4 +1,5 @@
-import { UserNotFoundError } from '../../errors/userNotFoundError.js'
+import { TransactionNotFoundError } from '../../errors/transactionNotFoundError.js'
+// import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 export class DeleteTransactionUseCase {
   constructor(deleteTransactionRepository) {
@@ -6,15 +7,11 @@ export class DeleteTransactionUseCase {
   }
 
   async execute(transactionId) {
-    try {
-      const deletedTransaction =
-        await this.deleteTransactionRepository.execute(transactionId)
-      return deletedTransaction
-    } catch (error) {
-      if (error instanceof UserNotFoundError) {
-        throw error
-      }
-      throw new Error('Failed to delete user')
+    const deletedTransaction =
+      await this.deleteTransactionRepository.execute(transactionId)
+    if (!deletedTransaction) {
+      throw new TransactionNotFoundError(transactionId)
     }
+    return deletedTransaction
   }
 }
