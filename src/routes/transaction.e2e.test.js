@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { user, transaction } from '../tests/fixtures/index.js'
 import { app } from '../app.js'
 import { TransactionType } from '@prisma/client'
+import { tr } from '@faker-js/faker'
 
 describe('Transaction Routes E2E Tests', () => {
   const request = supertest
@@ -85,6 +86,13 @@ describe('Transaction Routes E2E Tests', () => {
   it('DELETE /api/transaction/:transactionId should return 404 when deleting a non existing transaction', async () => {
     const response = await request(app).delete(
       `/api/transactions/${transaction.id}`,
+    )
+    expect(response.status).toBe(404)
+  })
+
+  it('GET /api/transaction?userId should return 404 when to send an invalid user id', async () => {
+    const response = await request(app).get(
+      `/api/transactions?userId=${transaction.id}`,
     )
     expect(response.status).toBe(404)
   })
