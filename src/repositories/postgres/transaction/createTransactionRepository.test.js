@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { prisma } from '../../../../prisma/prisma.js'
 import { transaction, user } from '../../../tests/fixtures/index.js'
 import { PostgresCreateTransactionRepository } from './createTransaction.js'
+
+dayjs.extend(utc)
 
 describe('PostgresCreateTransactionReposioty', () => {
   it('should create a transaction on db', async () => {
@@ -19,8 +22,8 @@ describe('PostgresCreateTransactionReposioty', () => {
     expect(result.type).toBe(transaction.type)
     expect(result.user_id).toBe(user.id)
     expect(String(result.amount)).toBe(String(transaction.amount))
-    expect(dayjs(result.date).daysInMonth()).toBe(
-      dayjs(transaction.date).daysInMonth(),
+    expect(dayjs(result.date).utc().daysInMonth()).toBe(
+      dayjs(transaction.date).utc().daysInMonth(),
     )
     expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month())
     expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year())

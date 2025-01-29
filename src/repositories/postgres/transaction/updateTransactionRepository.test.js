@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { faker } from '@faker-js/faker'
 import { prisma } from '../../../../prisma/prisma'
 import { transaction, user } from '../../../tests/fixtures'
@@ -6,6 +7,8 @@ import { PostgresUpdateTransactionRepository } from './updateTransactionReposito
 import { TransactionType } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { TransactionNotFoundError } from '../../../errors/transactionNotFoundError'
+
+dayjs.extend(utc)
 
 describe('PostgresUpdateTransactionRepository', () => {
   it('should update transaction on db', async () => {
@@ -32,12 +35,10 @@ describe('PostgresUpdateTransactionRepository', () => {
     expect(result.type).toBe(params.type)
     expect(result.user_id).toBe(user.id)
     expect(String(result.amount)).toBe(String(params.amount))
-    expect(dayjs(result.date).daysInMonth()).toBe(
-      dayjs(params.date).daysInMonth(),
+    expect(dayjs(result.date).utc().daysInMonth()).toBe(
+      dayjs(params.date).utc().daysInMonth(),
     )
-    expect(dayjs(result.date).format('YYYY-MM')).toBe(
-      dayjs(params.date).format('YYYY-MM'),
-    )
+    expect(dayjs(result.date).month()).toBe(dayjs(params.date).month())
     expect(dayjs(result.date).year()).toBe(dayjs(params.date).year())
   })
 
