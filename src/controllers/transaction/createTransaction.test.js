@@ -237,4 +237,31 @@ describe('Create Transaction Controller', () => {
     //assert
     expect(result.statusCode).toBe(400)
   })
+
+  it('should return 400 when validation schema fails', async () => {
+    //arrange
+    const { sut } = makeSut()
+    const response = await sut.execute({
+      body: {
+        user_id: 'invalid_uuid', // Um UUID inválido que causaria erro no Zod
+        name: faker.commerce.productName(),
+        date: 'invalid_date',
+        type: 'UNKNOWN_TYPE', // Um tipo não reconhecido
+        amount: 'invalid_amount',
+      },
+    })
+
+    //act & assert
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('should return correct error message when validation fails', async () => {
+    //arrange
+    const { sut } = makeSut()
+    const response = await sut.execute({
+      body: { ...baseHttpRequest.body, user_id: undefined },
+    })
+    //act & assert
+    expect(response.body.message).toBe('User ID is required.') // Ajuste conforme a validação do Zod
+  })
 })
