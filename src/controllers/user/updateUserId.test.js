@@ -167,4 +167,18 @@ describe('UpdateUserController', () => {
     //assert
     expect(response.statusCode).toBe(404)
   })
+
+  it('should return 400 with error message when EmailExistsError is thrown', async () => {
+    const { sut, updateUserUseCase } = makeSut()
+    const email = faker.internet.email()
+
+    jest.spyOn(updateUserUseCase, 'execute').mockImplementationOnce(() => {
+      throw new EmailExistsError(email)
+    })
+
+    const response = await sut.execute(httpRequest)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body.message).toBe(`The email: ${email} is already in use.`) // Verifique a mensagem aqui
+  })
 })
