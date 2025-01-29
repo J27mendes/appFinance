@@ -106,4 +106,17 @@ describe('Delete Transaction Controller', () => {
     //assert
     expect(response.statusCode).toBe(500)
   })
+
+  it('should return correct error message when id is invalid', async () => {
+    const { sut } = makeSut()
+
+    //act
+    const response = await sut.execute({
+      params: { transactionId: 'The provided id is not valid.' },
+    })
+
+    //assert
+    expect(response.statusCode).toBe(400)
+    expect(response.body.message).toBe('The provided id is not valid.') // Ajuste conforme a mensagem real da sua função `invalidIdResponse`
+  })
 })
