@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { CreateUserController } from './userCreate.js'
 import { EmailExistsError } from '../../errors/user.js'
-import { undefined } from 'zod'
+import { ZodError } from 'zod'
 
 describe('Create User Controller', () => {
   class CreateUserControllerStub {
@@ -161,5 +161,40 @@ describe('Create User Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(400)
+  })
+
+  it('should return 400 if email is invalid according to Zod validation', async () => {
+    const { sut } = makeSut()
+
+    // Email com formato inválido
+    const invalidEmailRequest = {
+      body: { ...httpRequest.body, email: 'invalid_email' },
+    }
+
+    const result = await sut.execute(invalidEmailRequest)
+
+    expect(result.statusCode).toBe(400)
+    expect(result.body.message).toBe('Please provide a valid e-mail')
+  })
+
+  it('should return 400 if email is invalid according to Zod validation', async () => {
+    //arrange
+    const { sut, createUserUseCase } = makeSut()
+    const zodError = new ZodError([
+      {
+        message: 'Please provide a valid e-mail',
+        path: ['email'],
+        validation: 'email',
+      },
+    ])
+
+    jest.spyOn(createUserUseCase, 'execute').mockRejectedValueOnce(zodError)
+
+    //act
+    const result = await sut.execute(httpRequest)
+
+    // assert
+    expect(result.statusCode).toBe(400)
+    expect(result.body.message).toBe('Please provide a valid e-mail')
   })
 })
