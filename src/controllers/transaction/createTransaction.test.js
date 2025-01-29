@@ -264,4 +264,19 @@ describe('Create Transaction Controller', () => {
     //act & assert
     expect(response.body.message).toBe('User ID is required.') // Ajuste conforme a validação do Zod
   })
+
+  it('should return a formatted error response when server error occurs', async () => {
+    //arrange
+    const { sut, createTransactionUseCase } = makeSut()
+    jest
+      .spyOn(createTransactionUseCase, 'execute')
+      .mockRejectedValueOnce(new Error('Internal Error'))
+
+    //act
+    const response = await sut.execute(baseHttpRequest)
+
+    //asserrt
+    expect(response.statusCode).toBe(500)
+    expect(response.message).toEqual('Internal server error') // Ajuste conforme a implementação do `serverError`
+  })
 })
