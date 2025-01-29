@@ -85,11 +85,10 @@ describe('PostgresDeleteTransactionRepository', () => {
   })
 
   it('should throw an error if an unexpected error occurs', async () => {
+    const error = new Error()
     const sut = new PostgresDeleteTransactionRepository()
-    jest
-      .spyOn(prisma.transaction, 'delete')
-      .mockRejectedValue(new Error('Unexpected error'))
+    jest.spyOn(prisma.transaction, 'delete').mockRejectedValue(error)
 
-    await expect(sut.execute('invalid-id')).rejects.toThrow('Unexpected error')
+    await expect(sut.execute('invalid-id')).rejects.toThrow(error)
   })
 })
