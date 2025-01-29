@@ -25,7 +25,9 @@ describe('PostgresCreateTransactionReposioty', () => {
     expect(dayjs(result.date).utc().daysInMonth()).toBe(
       dayjs(transaction.date).utc().daysInMonth(),
     )
-    expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month())
+    expect(dayjs(result.date).utc().month()).toBe(
+      dayjs(transaction.date).utc().month(),
+    )
     expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year())
   })
 

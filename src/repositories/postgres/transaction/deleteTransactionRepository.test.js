@@ -28,7 +28,9 @@ describe('PostgresDeleteTransactionRepository', () => {
     expect(dayjs(result.date).utc().daysInMonth()).toBe(
       dayjs(transaction.date).utc().daysInMonth(),
     )
-    expect(dayjs(result.date).month()).toBe(dayjs(transaction.date).month())
+    expect(dayjs(result.date).utc().month()).toBe(
+      dayjs(transaction.date).utc().month(),
+    )
     expect(dayjs(result.date).year()).toBe(dayjs(transaction.date).year())
   })
 
@@ -80,5 +82,14 @@ describe('PostgresDeleteTransactionRepository', () => {
     expect(promise).rejects.toThrow(
       new TransactionNotFoundError(transaction.id),
     )
+  })
+
+  it('should throw an error if an unexpected error occurs', async () => {
+    const sut = new PostgresDeleteTransactionRepository()
+    jest
+      .spyOn(prisma.transaction, 'delete')
+      .mockRejectedValue(new Error('Unexpected error'))
+
+    await expect(sut.execute('invalid-id')).rejects.toThrow('Unexpected error')
   })
 })
