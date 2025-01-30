@@ -4,5 +4,82 @@
     "title": "API Finance",
     "description": "API for Finance App that allows users to manage their finances",
     "version": "1.0.0"
+  },
+  "paths": {
+    "/api/users": {
+      "post": {
+        "sumary": "Create a new user",
+        "tags": ["CreateUserParams"],
+        "parameters": [
+          {
+            "name": "body",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid params"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateUserParams": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Mari"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Suassuna"
+        },
+        "email": {
+          "type": "string",
+          "example": "marissuna@yahoo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "0d2ea334-cc30-4085-a149-71fb414ef9f7"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Mari"
+        },
+        "Last_name": {
+          "type": "string",
+          "example": "Suassuna"
+        },
+        "email": {
+          "type": "string",
+          "example": "marissuna@yahoo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    }
   }
 }
