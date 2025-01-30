@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker'
 import { GetUserByIdController } from './getUserById'
-import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 describe('GetUserByIdController', () => {
   class GetUserByIdUseCaseStub {
@@ -48,12 +47,15 @@ describe('GetUserByIdController', () => {
   })
 
   it('should return 400 if an invalid id is provided', async () => {
-    //arrange
+    // Arrange
     const { sut } = makeSut()
-    //act
+
+    // Act
     const result = await sut.execute({ params: { userId: 'invalid_id' } })
-    //assert
+
+    // Assert
     expect(result.statusCode).toBe(400)
+    expect(result.body.message).toBe('The provided id is not valid.')
   })
 
   it('Should return 404 id user is not found', async () => {
@@ -78,5 +80,6 @@ describe('GetUserByIdController', () => {
 
     //assert
     expect(result.statusCode).toBe(500)
+    expect(result.message).toEqual('Internal server error')
   })
 })
