@@ -28,7 +28,16 @@
             }
           },
           "400": {
-            "description": "Invalid params"
+            "description": "Invalid params",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid parameter, message depending on the request response"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal server error"
