@@ -92,4 +92,14 @@ describe('PostgresUpdateTransactionRepository', () => {
       new TransactionNotFoundError(transaction.id),
     )
   })
+
+  it('should throw an error in the PostgresUpdateTransactionRepository if an unexpected error occurs', async () => {
+    //arrange
+    const error = new Error()
+    const sut = new PostgresUpdateTransactionRepository()
+    jest.spyOn(prisma.transaction, 'update').mockRejectedValue(error)
+
+    //axt & assert
+    await expect(sut.execute('invalid-id')).rejects.toThrow(error)
+  })
 })
