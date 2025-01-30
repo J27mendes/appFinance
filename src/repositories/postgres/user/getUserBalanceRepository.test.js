@@ -120,4 +120,19 @@ describe('PostgresGetUserBalanceRepository', () => {
     //assert
     await expect(promise).rejects.toThrow()
   })
+
+  it('should return zero balance if user has no transactions', async () => {
+    // Arrange
+    const user = await prisma.user.create({ data: fakeUser })
+    const sut = new PostgresGetUserBalanceRepository()
+
+    // Act
+    const result = await sut.execute(user.id)
+
+    // Assert
+    expect(result.earnings.toString()).toBe('0')
+    expect(result.expenses.toString()).toBe('0')
+    expect(result.investments.toString()).toBe('0')
+    expect(result.balance.toString()).toBe('0')
+  })
 })
