@@ -115,10 +115,10 @@ describe('UpdateUserUseCase', () => {
     //arrange
     const { sut, postgresCompareEmail } = makeSut()
     const existingUser = {
-      id: faker.string.uuid(), // Usuário que já tem esse e-mail
+      id: faker.string.uuid(),
       email: faker.internet.email(),
     }
-    const differentUserId = faker.string.uuid() // Usuário tentando atualizar o email
+    const differentUserId = faker.string.uuid()
     jest.spyOn(postgresCompareEmail, 'execute').mockResolvedValue(existingUser)
 
     //act
