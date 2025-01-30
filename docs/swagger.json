@@ -9,7 +9,7 @@
     "/api/users": {
       "post": {
         "sumary": "Create a new user",
-        "tags": ["CreateUserParams"],
+        "tags": ["User"],
         "parameters": [
           {
             "name": "body",
@@ -23,6 +23,32 @@
         "responses": {
           "201": {
             "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid params"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "tags": ["User"],
+        "sumary": "Get user by Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found successfully"
           },
           "400": {
             "description": "Invalid params"
