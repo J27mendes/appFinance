@@ -135,4 +135,31 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(result.investments.toString()).toBe('0')
     expect(result.balance.toString()).toBe('0')
   })
+
+  it('should use Prisma.Decimal(0) when aggregate returns null for earnings, expenses or investments', async () => {
+    // Arrange
+    const user = await prisma.user.create({ data: fakeUser })
+    jest
+      .spyOn(prisma.transaction, 'aggregate')
+      .mockResolvedValueOnce({
+        _sum: { amount: null },
+      })
+      .mockResolvedValueOnce({
+        _sum: { amount: null },
+      })
+      .mockResolvedValueOnce({
+        _sum: { amount: null },
+      })
+
+    const sut = new PostgresGetUserBalanceRepository()
+
+    // Act
+    const result = await sut.execute(user.id)
+
+    // Assert
+    expect(result.earnings.toString()).toBe('0')
+    expect(result.expenses.toString()).toBe('0')
+    expect(result.investments.toString()).toBe('0')
+    expect(result.balance.toString()).toBe('0')
+  })
 })
