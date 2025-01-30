@@ -114,15 +114,20 @@ describe('UpdateUserUseCase', () => {
   it('should throws EmailAlreadyInUseError if email already in use', async () => {
     //arrange
     const { sut, postgresCompareEmail } = makeSut()
-    jest.spyOn(postgresCompareEmail, 'execute').mockResolvedValue(user)
+    const existingUser = {
+      id: faker.string.uuid(), // Usuário que já tem esse e-mail
+      email: faker.internet.email(),
+    }
+    const differentUserId = faker.string.uuid() // Usuário tentando atualizar o email
+    jest.spyOn(postgresCompareEmail, 'execute').mockResolvedValue(existingUser)
 
     //act
-    const promise = sut.execute(faker.string.uuid(), {
-      email: user.email,
-    })
+    const promise = sut.execute(differentUserId, { email: existingUser.email })
 
     //assert
-    await expect(promise).rejects.toThrow(new EmailExistsError(user.email))
+    await expect(promise).rejects.toThrow(
+      new EmailExistsError(existingUser.email),
+    )
   })
 
   it('should call UpdateUserRepository with correct params', async () => {
