@@ -7,7 +7,7 @@
   "scripts": {
     "test": "dotenv -e .env.test -- jest --passWithNoTests --silent --runInBand --detectOpenHandles --forceExit",
     "test:watch": "npm run test -- jest --watch",
-    "test:coverage": "npm run test -- --coverage",
+    "test:coverage": "npm run test -- --coverage --no-cache",
     "postinstall": "npx husky install",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
