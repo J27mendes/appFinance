@@ -32,11 +32,13 @@ export class GetTransactionByUserIdController {
 
       return ok(transactions)
     } catch (error) {
-      console.error(error)
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()
       }
-
+      console.error(
+        'Unexpected error in GetTransactionByUserIdController:',
+        error,
+      )
       return serverError()
     }
   }
