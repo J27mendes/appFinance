@@ -260,6 +260,57 @@
           }
         }
       }
+    },
+    "/api/transactions/{transactionId}": {
+      "patch": {
+        "summary": "Update a new transaction by Transaction Id",
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "description": "The ID of the transaction that will be updated.",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          {
+            "name": "body",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateTransaction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "schema": {
+              "$ref": "#/definitions/InvalidParamsResponse"
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "schema": {
+              "$ref": "#/definitions/TransactionNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -330,33 +381,6 @@
         }
       }
     },
-    "InternalServerError": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Internal server error"
-        }
-      }
-    },
-    "UserNotFoundResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "User not found"
-        }
-      }
-    },
-    "InvalidParamsResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Invalid parameter, message depending on the request response"
-        }
-      }
-    },
     "Transaction": {
       "type": "object",
       "properties": {
@@ -383,6 +407,57 @@
           "type": "string",
           "enum": ["EARNING", "EXPENSE", "INVESTMENT"],
           "example": "EARNING"
+        }
+      }
+    },
+    "UpdateTransaction": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "product"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2021-10-10T00:00:00.000Z"
+        },
+        "amount": {
+          "type": "number",
+          "format": "float",
+          "example": 1000.0
+        },
+        "type": {
+          "type": "string",
+          "enum": ["EARNING", "EXPENSE", "INVESTMENT"],
+          "example": "EARNING"
+        }
+      }
+    },
+    "InternalServerError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Internal server error"
+        }
+      }
+    },
+    "UserNotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User not found"
+        }
+      }
+    },
+    "InvalidParamsResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Invalid parameter, message depending on the request response"
         }
       }
     },
