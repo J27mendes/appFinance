@@ -202,7 +202,7 @@
             "required": true,
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateTransactionParams"
+              "$ref": "#/definitions/Transaction"
             }
           }
         ],
@@ -217,6 +217,39 @@
             "description": "Invalid params",
             "schema": {
               "$ref": "#/definitions/InvalidParamsResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get transaction by Id",
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction found successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "404": {
+            "description": "Trasnsaction not found",
+            "schema": {
+              "$ref": "#/definitions/TransactionNotFoundResponse"
             }
           },
           "500": {
@@ -324,7 +357,7 @@
         }
       }
     },
-    "CreateTransactionParams": {
+    "Transaction": {
       "type": "object",
       "properties": {
         "user_id": {
@@ -348,8 +381,17 @@
         },
         "type": {
           "type": "string",
-          "enum": ["EARNING", "EXPENSE", "INVESTIMENT"],
+          "enum": ["EARNING", "EXPENSE", "INVESTMENT"],
           "example": "EARNING"
+        }
+      }
+    },
+    "TransactionNotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Transaction not found"
         }
       }
     }
