@@ -15,6 +15,7 @@
             "name": "body",
             "required": true,
             "in": "body",
+            "description": "Created user with correct params",
             "schema": {
               "$ref": "#/definitions/CreateUserParams"
             }
@@ -194,7 +195,7 @@
     },
     "/api/transactions": {
       "post": {
-        "summary": "Create a new transaction",
+        "summary": "Create a new transaction by user Id",
         "tags": ["Transaction"],
         "parameters": [
           {
@@ -207,7 +208,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Transaction created successfully",
             "schema": {
               "$ref": "#/definitions/CreateTransactionParams"
@@ -295,6 +296,41 @@
             "description": "Invalid params",
             "schema": {
               "$ref": "#/definitions/InvalidParamsResponse"
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "schema": {
+              "$ref": "#/definitions/TransactionNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a transaction by transaction Id",
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "description": "The ID of the transaction that will be deleted.",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
             }
           },
           "404": {
