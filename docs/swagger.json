@@ -8,7 +8,7 @@
   "paths": {
     "/api/users": {
       "post": {
-        "sumary": "Create a new user",
+        "summary": "Create a new user",
         "tags": ["User"],
         "parameters": [
           {
@@ -44,8 +44,8 @@
     },
     "/api/users/{userId}": {
       "get": {
+        "summary": "Get user by Id",
         "tags": ["User"],
-        "sumary": "Get user by Id",
         "parameters": [
           {
             "in": "path",
@@ -77,8 +77,8 @@
         }
       },
       "patch": {
+        "summary": "Update user by Id",
         "tags": ["User"],
-        "sumary": "Update user by Id",
         "parameters": [
           {
             "in": "path",
@@ -124,8 +124,8 @@
         }
       },
       "delete": {
+        "summary": "Delete user by Id",
         "tags": ["User"],
-        "sumary": "Delete user by Id",
         "parameters": [
           {
             "in": "path",
@@ -159,8 +159,8 @@
     },
     "/api/users/{userId}/balance": {
       "get": {
+        "summary": "Get balance by user Id",
         "tags": ["User"],
-        "sumary": "Get balance by user Id",
         "parameters": [
           {
             "in": "path",
@@ -181,6 +181,42 @@
             "description": "User not found",
             "schema": {
               "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions": {
+      "post": {
+        "summary": "Create a new transaction",
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "name": "body",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateTransactionParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "schema": {
+              "$ref": "#/definitions/CreateTransactionParams"
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "schema": {
+              "$ref": "#/definitions/InvalidParamsResponse"
             }
           },
           "500": {
@@ -285,6 +321,35 @@
         "message": {
           "type": "string",
           "example": "Invalid parameter, message depending on the request response"
+        }
+      }
+    },
+    "CreateTransactionParams": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "b92bcf8c-4ebc-4d26-bbba-950b0653c6b5"
+        },
+        "name": {
+          "type": "string",
+          "example": "product"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2021-10-10T00:00:00.000Z"
+        },
+        "amount": {
+          "type": "number",
+          "format": "float",
+          "example": 1000.0
+        },
+        "type": {
+          "type": "string",
+          "enum": ["EARNING", "EXPENSE", "INVESTIMENT"],
+          "example": "EARNING"
         }
       }
     }
