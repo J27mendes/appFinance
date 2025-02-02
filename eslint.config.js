@@ -1,19 +1,18 @@
 import globals from 'globals'
 
-export default {
-  configs: {
+export default [
+  {
+    name: 'example/recommended',
     languageOptions: { globals: globals.node },
-    recommended: {
-      name: 'example/recommended',
-      rules: {
-        'no-unused-vars': 'warn',
-      },
-    },
-    strict: {
-      name: 'example/strict',
-      rules: {
-        'no-unused-vars': 'error',
-      },
+    rules: {
+      'no-unused-vars': 'warn',
     },
   },
-}
+  {
+    name: 'example/strict',
+    languageOptions: { globals: globals.node },
+    rules: {
+      'no-unused-vars': 'error',
+    },
+  },
+]
