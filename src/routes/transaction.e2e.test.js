@@ -2,7 +2,6 @@ import supertest from 'supertest'
 import { user, transaction } from '../tests/fixtures/index.js'
 import { app } from '../app.js'
 import { TransactionType } from '@prisma/client'
-import { tr } from '@faker-js/faker'
 
 describe('Transaction Routes E2E Tests', () => {
   const request = supertest
