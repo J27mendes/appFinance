@@ -14,7 +14,7 @@
     "prepare": "husky",
     "migrations": "node src/db/postgres/migrations/exec.js",
     "start:dev": "node index.js",
-    "eslint:check": "eslint src/ ",
+    "eslint:check": "eslint src",
     "prettier:check": "prettier --check src"
   },
   "keywords": [],
