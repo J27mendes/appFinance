@@ -3,9 +3,9 @@ name: Deploy
 on: [push]
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
+  check:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: ESlint
-              run: npm run eslint:check
+    steps:
+      - name: ESlint
+        run: npm run eslint:check
