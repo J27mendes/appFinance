@@ -1,6 +1,6 @@
 import { DeleteTransactionUseCase } from './deleteTransactionUseCase'
 import { UserNotFoundError } from '../../errors/userNotFoundError'
-import { transaction, user } from '../../tests/fixtures/index'
+import { transaction } from '../../tests/fixtures/index'
 
 describe('DeleteTransaction', () => {
   class DeleteTransactionRepositoryStub {
