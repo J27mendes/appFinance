@@ -3,149 +3,149 @@ import { UpdateTransactionController } from './updateTransactionController'
 import { TransactionNotFoundError } from '../../errors/transactionNotFoundError'
 
 describe('Update Transaction Controller', () => {
-  class UpdateTransactionUseCaseStub {
-    async execute() {
-      return {
-        user_id: faker.string.uuid(),
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
-        type: 'EXPENSE',
-        amount: Number(faker.finance.amount()),
-      }
+    class UpdateTransactionUseCaseStub {
+        async execute() {
+            return {
+                user_id: faker.string.uuid(),
+                id: faker.string.uuid(),
+                name: faker.commerce.productName(),
+                date: faker.date.anytime().toISOString(),
+                type: 'EXPENSE',
+                amount: Number(faker.finance.amount()),
+            }
+        }
     }
-  }
-  const makeSut = () => {
-    const updateTransactionUseCase = new UpdateTransactionUseCaseStub()
-    const sut = new UpdateTransactionController(updateTransactionUseCase)
+    const makeSut = () => {
+        const updateTransactionUseCase = new UpdateTransactionUseCaseStub()
+        const sut = new UpdateTransactionController(updateTransactionUseCase)
 
-    return {
-      sut,
-      updateTransactionUseCase,
+        return {
+            sut,
+            updateTransactionUseCase,
+        }
     }
-  }
 
-  const baseHttpRequest = {
-    params: {
-      transactionId: faker.string.uuid(),
-    },
-    body: {
-      name: faker.commerce.productName(),
-      date: faker.date.anytime().toISOString(),
-      type: 'EXPENSE',
-      amount: Number(faker.finance.amount()),
-    },
-  }
+    const baseHttpRequest = {
+        params: {
+            transactionId: faker.string.uuid(),
+        },
+        body: {
+            name: faker.commerce.productName(),
+            date: faker.date.anytime().toISOString(),
+            type: 'EXPENSE',
+            amount: Number(faker.finance.amount()),
+        },
+    }
 
-  it('should return 200 when updating transaction successfully', async () => {
-    //arrange
-    const { sut } = makeSut()
+    it('should return 200 when updating transaction successfully', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-    //act
-    const response = await sut.execute(baseHttpRequest)
+        //act
+        const response = await sut.execute(baseHttpRequest)
 
-    //assert
-    expect(response.statusCode).toBe(200)
-  })
-
-  it('should return 400 when id transaction is invalid', async () => {
-    //arrange
-    const { sut } = makeSut()
-
-    //act
-    const response = await sut.execute({
-      params: { transactionId: 'id_invalid' },
+        //assert
+        expect(response.statusCode).toBe(200)
     })
 
-    //assert
-    expect(response.statusCode).toBe(400)
-  })
+    it('should return 400 when id transaction is invalid', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-  it('should return 400 when unallowed field is provided', async () => {
-    //arrange
-    const { sut } = makeSut()
+        //act
+        const response = await sut.execute({
+            params: { transactionId: 'id_invalid' },
+        })
 
-    //act
-    const response = await sut.execute({
-      ...baseHttpRequest,
-      body: { ...baseHttpRequest.body, unallowed: 'some_value' },
+        //assert
+        expect(response.statusCode).toBe(400)
     })
 
-    //assert
-    expect(response.statusCode).toBe(400)
-  })
+    it('should return 400 when unallowed field is provided', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-  it('should return 400 when amount is not valid', async () => {
-    //arrange
-    const { sut } = makeSut()
+        //act
+        const response = await sut.execute({
+            ...baseHttpRequest,
+            body: { ...baseHttpRequest.body, unallowed: 'some_value' },
+        })
 
-    //act
-    const response = await sut.execute({
-      ...baseHttpRequest,
-      body: { ...baseHttpRequest.body, amount: 'amount is not valid' },
+        //assert
+        expect(response.statusCode).toBe(400)
     })
 
-    //assert
-    expect(response.statusCode).toBe(400)
-  })
+    it('should return 400 when amount is not valid', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-  it('should return 400 when type provided is not correct', async () => {
-    //arrange
-    const { sut } = makeSut()
+        //act
+        const response = await sut.execute({
+            ...baseHttpRequest,
+            body: { ...baseHttpRequest.body, amount: 'amount is not valid' },
+        })
 
-    //act
-    const response = await sut.execute({
-      ...baseHttpRequest,
-      body: {
-        ...baseHttpRequest.body,
-        type: 'TYPE_IS_NOT_CORRECT                                                        ',
-      },
+        //assert
+        expect(response.statusCode).toBe(400)
     })
 
-    //assert
-    expect(response.statusCode).toBe(400)
-  })
+    it('should return 400 when type provided is not correct', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-  it('should call UpdateTransaction with correct params', async () => {
-    //arrange
-    const { sut, updateTransactionUseCase } = makeSut()
-    const executeSpy = jest.spyOn(updateTransactionUseCase, 'execute')
+        //act
+        const response = await sut.execute({
+            ...baseHttpRequest,
+            body: {
+                ...baseHttpRequest.body,
+                type: 'TYPE_IS_NOT_CORRECT                                                        ',
+            },
+        })
 
-    //act
-    await sut.execute(baseHttpRequest)
+        //assert
+        expect(response.statusCode).toBe(400)
+    })
 
-    //assert
-    expect(executeSpy).toHaveBeenCalledWith(
-      baseHttpRequest.params.transactionId,
-      baseHttpRequest.body,
-    )
-  })
+    it('should call UpdateTransaction with correct params', async () => {
+        //arrange
+        const { sut, updateTransactionUseCase } = makeSut()
+        const executeSpy = jest.spyOn(updateTransactionUseCase, 'execute')
 
-  it('should return 500 when exists server error', async () => {
-    //arrange
-    const { sut, updateTransactionUseCase } = makeSut()
-    jest
-      .spyOn(updateTransactionUseCase, 'execute')
-      .mockRejectedValueOnce(new Error())
+        //act
+        await sut.execute(baseHttpRequest)
 
-    //act
-    const response = await sut.execute({ baseHttpRequest })
+        //assert
+        expect(executeSpy).toHaveBeenCalledWith(
+            baseHttpRequest.params.transactionId,
+            baseHttpRequest.body,
+        )
+    })
 
-    //assert
-    expect(response.statusCode).toBe(500)
-  })
+    it('should return 500 when exists server error', async () => {
+        //arrange
+        const { sut, updateTransactionUseCase } = makeSut()
+        jest.spyOn(updateTransactionUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
 
-  it('should return 404 when transactionNotFoundError is thron', async () => {
-    //arrange
-    const { sut, updateTransactionUseCase } = makeSut()
-    jest
-      .spyOn(updateTransactionUseCase, 'execute')
-      .mockRejectedValueOnce(new TransactionNotFoundError())
+        //act
+        const response = await sut.execute({ baseHttpRequest })
 
-    //act
-    const response = await sut.execute(baseHttpRequest)
+        //assert
+        expect(response.statusCode).toBe(500)
+    })
 
-    //assert
-    expect(response.statusCode).toBe(404)
-  })
+    it('should return 404 when transactionNotFoundError is thron', async () => {
+        //arrange
+        const { sut, updateTransactionUseCase } = makeSut()
+        jest.spyOn(updateTransactionUseCase, 'execute').mockRejectedValueOnce(
+            new TransactionNotFoundError(),
+        )
+
+        //act
+        const response = await sut.execute(baseHttpRequest)
+
+        //assert
+        expect(response.statusCode).toBe(404)
+    })
 })

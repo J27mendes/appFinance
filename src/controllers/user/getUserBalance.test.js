@@ -3,84 +3,84 @@ import { GetUserBalanceController } from './getUserBalanceController.js'
 import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 describe('GetUserBalanceController', () => {
-  class GetUserBalanceUseCaseStub {
-    async execute() {
-      return faker.number.int()
+    class GetUserBalanceUseCaseStub {
+        async execute() {
+            return faker.number.int()
+        }
     }
-  }
 
-  const makeSut = () => {
-    const getUserBalanceUseCase = new GetUserBalanceUseCaseStub()
-    const sut = new GetUserBalanceController(getUserBalanceUseCase)
+    const makeSut = () => {
+        const getUserBalanceUseCase = new GetUserBalanceUseCaseStub()
+        const sut = new GetUserBalanceController(getUserBalanceUseCase)
 
-    return { getUserBalanceUseCase, sut }
-  }
+        return { getUserBalanceUseCase, sut }
+    }
 
-  const httpRequest = {
-    params: {
-      userId: faker.string.uuid(),
-    },
-  }
+    const httpRequest = {
+        params: {
+            userId: faker.string.uuid(),
+        },
+    }
 
-  it('Should return 200 when getting user balance', async () => {
-    //arrange
-    const { sut } = makeSut()
+    it('Should return 200 when getting user balance', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-    //act
-    const httpResponse = await sut.execute(httpRequest)
+        //act
+        const httpResponse = await sut.execute(httpRequest)
 
-    //assert
-    expect(httpResponse.statusCode).toBe(200)
-  })
+        //assert
+        expect(httpResponse.statusCode).toBe(200)
+    })
 
-  it('Should call getUserBalanceUseCase with correct params', async () => {
-    //arrange
-    const { sut, getUserBalanceUseCase } = makeSut()
-    const executeSpy = jest.spyOn(getUserBalanceUseCase, 'execute')
+    it('Should call getUserBalanceUseCase with correct params', async () => {
+        //arrange
+        const { sut, getUserBalanceUseCase } = makeSut()
+        const executeSpy = jest.spyOn(getUserBalanceUseCase, 'execute')
 
-    //act
-    await sut.execute(httpRequest)
+        //act
+        await sut.execute(httpRequest)
 
-    //assert
-    expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
-  })
+        //assert
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId)
+    })
 
-  it('Should return 400 if id is not valid', async () => {
-    //arrange
-    const { sut } = makeSut()
+    it('Should return 400 if id is not valid', async () => {
+        //arrange
+        const { sut } = makeSut()
 
-    //act
-    const result = await sut.execute({ params: { userId: 'id_invalid' } })
+        //act
+        const result = await sut.execute({ params: { userId: 'id_invalid' } })
 
-    //assert
-    expect(result.statusCode).toBe(400)
-  })
+        //assert
+        expect(result.statusCode).toBe(400)
+    })
 
-  it('Should return 404 if id user is not found', async () => {
-    //arrange
-    const { sut, getUserBalanceUseCase } = makeSut()
-    jest
-      .spyOn(getUserBalanceUseCase, 'execute')
-      .mockRejectedValueOnce(new UserNotFoundError(httpRequest.params.userId))
+    it('Should return 404 if id user is not found', async () => {
+        //arrange
+        const { sut, getUserBalanceUseCase } = makeSut()
+        jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(
+            new UserNotFoundError(httpRequest.params.userId),
+        )
 
-    //act
-    const result = await sut.execute(httpRequest)
+        //act
+        const result = await sut.execute(httpRequest)
 
-    //assert
-    expect(result.statusCode).toBe(404)
-  })
+        //assert
+        expect(result.statusCode).toBe(404)
+    })
 
-  it('Should return 500 if getUserBalance thorws', async () => {
-    //arrange
-    const { sut, getUserBalanceUseCase } = makeSut()
-    jest
-      .spyOn(getUserBalanceUseCase, 'execute')
-      .mockRejectedValueOnce(new Error())
+    it('Should return 500 if getUserBalance thorws', async () => {
+        //arrange
+        const { sut, getUserBalanceUseCase } = makeSut()
+        jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
 
-    //act
-    const result = await sut.execute(httpRequest)
+        //act
+        const result = await sut.execute(httpRequest)
 
-    //assert
-    expect(result.statusCode).toBe(500)
-  })
+        //assert
+        expect(result.statusCode).toBe(500)
+    })
 })
