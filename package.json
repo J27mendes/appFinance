@@ -13,7 +13,8 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "migrations": "node src/db/postgres/migrations/exec.js",
-    "start:dev": "node index.js"
+    "start:dev": "node index.js",
+    "eslint:check": "eslint src/ "
   },
   "keywords": [],
   "author": "",
