@@ -5,8 +5,8 @@ import {
   requiredFieldsIsMissingResponse,
 } from './index.js';
 
-jest.mock('./http.js', () => ({
-  badRequest: jest.fn((data) => data),
+import.meta.jest.mock('./http.js', () => ({
+  badRequest: import.meta.jest.fn((data) => data),
 }));
 
 describe('validation Functions Tests', () => {
@@ -22,14 +22,16 @@ describe('validation Functions Tests', () => {
 
   it('invalidIdResponse must return an error object with the correct message', () => {
     expect(invalidIdResponse()).toEqual({
-      message: 'The provided id is not valid.',
+      statusCode: 400,
+      body: { message: 'The provided id is not valid.' },
     });
   });
 
   it('requiredFieldsIsMissingResponse must return an error object with the correct message', () => {
     const field = 'name';
     expect(requiredFieldsIsMissingResponse(field)).toEqual({
-      message: `The field ${field} is required.`,
+      statusCode: 400,
+      body: { message: `The field ${field} is required.` },
     });
   });
 });
