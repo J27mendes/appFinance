@@ -44,7 +44,9 @@ describe('GetTransactionByIdUseCase', () => {
   it('should throw UserNotFoundError if user does not exist', async () => {
     //arrange
     const { sut, getUserIdRepository } = makeSut();
-    jest.spyOn(getUserIdRepository, 'execute').mockResolvedValueOnce(null);
+    import.meta.jest
+      .spyOn(getUserIdRepository, 'execute')
+      .mockResolvedValueOnce(null);
     const id = user.id;
 
     //act
@@ -57,7 +59,10 @@ describe('GetTransactionByIdUseCase', () => {
   it('should call GetUserIdRepository with correct params', async () => {
     //arrange
     const { sut, getUserIdRepository } = makeSut();
-    const getUserIdRepositorySpy = jest.spyOn(getUserIdRepository, 'execute');
+    const getUserIdRepositorySpy = import.meta.jest.spyOn(
+      getUserIdRepository,
+      'execute',
+    );
 
     const id = user.id;
 
@@ -71,7 +76,7 @@ describe('GetTransactionByIdUseCase', () => {
   it('should call PostgresGetTransactionByIdRepository with correct params', async () => {
     //arrange
     const { sut, postgresGetTransactionByIdRepository } = makeSut();
-    const postgresGetTransactionByIdRepositorySpy = jest.spyOn(
+    const postgresGetTransactionByIdRepositorySpy = import.meta.jest.spyOn(
       postgresGetTransactionByIdRepository,
       'execute',
     );
@@ -88,7 +93,7 @@ describe('GetTransactionByIdUseCase', () => {
   it('should throw if PostgresGetTransactionByIdRepository throws', async () => {
     //arrange
     const { sut, postgresGetTransactionByIdRepository } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(postgresGetTransactionByIdRepository, 'execute')
       .mockRejectedValueOnce(new Error());
 
@@ -104,7 +109,7 @@ describe('GetTransactionByIdUseCase', () => {
   it('should throw if GetUserIdRepository throws', async () => {
     //arrange
     const { sut, getUserIdRepository } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(getUserIdRepository, 'execute')
       .mockRejectedValueOnce(new Error());
 

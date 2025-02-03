@@ -35,7 +35,7 @@ describe('PostgresCreateTransactionReposioty', () => {
     //arrange
     await prisma.user.create({ data: user });
     const sut = new PostgresCreateTransactionRepository();
-    const prismaSpy = jest.spyOn(prisma.transaction, 'create');
+    const prismaSpy = import.meta.jest.spyOn(prisma.transaction, 'create');
 
     //act
     await sut.execute({ ...transaction, user_id: user.id });
@@ -52,7 +52,9 @@ describe('PostgresCreateTransactionReposioty', () => {
   it('should in PostgresCreateTransactionRepository throw if Prisma throw', async () => {
     //arrange
     const sut = new PostgresCreateTransactionRepository();
-    jest.spyOn(prisma.transaction, 'create').mockRejectedValueOnce(new Error());
+    import.meta.jest
+      .spyOn(prisma.transaction, 'create')
+      .mockRejectedValueOnce(new Error());
 
     // Act & Assert
     await expect(sut.execute(transaction)).rejects.toThrow();

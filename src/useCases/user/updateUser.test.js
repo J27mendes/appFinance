@@ -70,7 +70,10 @@ describe('UpdateUserUseCase', () => {
   it('must update the user successfully with email received by updateUserParams.email', async () => {
     //arrange
     const { sut, postgresCompareEmail } = makeSut();
-    const postgresCompareEmailSpy = jest.spyOn(postgresCompareEmail, 'execute');
+    const postgresCompareEmailSpy = import.meta.jest.spyOn(
+      postgresCompareEmail,
+      'execute',
+    );
     const email = user.email;
 
     //act
@@ -97,7 +100,7 @@ describe('UpdateUserUseCase', () => {
   it('must update the user successfully with email received by updateUserParams.password', async () => {
     //arrange
     const { sut, passwordHasherAdapter } = makeSut();
-    const passwordHasherAdapterSpy = jest.spyOn(
+    const passwordHasherAdapterSpy = import.meta.jest.spyOn(
       passwordHasherAdapter,
       'execute',
     );
@@ -119,7 +122,9 @@ describe('UpdateUserUseCase', () => {
       email: faker.internet.email(),
     };
     const differentUserId = faker.string.uuid();
-    jest.spyOn(postgresCompareEmail, 'execute').mockResolvedValue(existingUser);
+    import.meta.jest
+      .spyOn(postgresCompareEmail, 'execute')
+      .mockResolvedValue(existingUser);
 
     //act
     const promise = sut.execute(differentUserId, {
@@ -135,7 +140,7 @@ describe('UpdateUserUseCase', () => {
   it('should call UpdateUserRepository with correct params', async () => {
     //arrange
     const { sut, postgresUpdateUserRepository } = makeSut();
-    const postgresUpdateUserRepositorySpy = jest.spyOn(
+    const postgresUpdateUserRepositorySpy = import.meta.jest.spyOn(
       postgresUpdateUserRepository,
       'execute',
     );
@@ -157,7 +162,9 @@ describe('UpdateUserUseCase', () => {
   it('should throw if postgresCompareEmail throws', async () => {
     //arrange
     const { sut, postgresCompareEmail } = makeSut();
-    jest.spyOn(postgresCompareEmail, 'execute').mockRejectedValue(new Error());
+    import.meta.jest
+      .spyOn(postgresCompareEmail, 'execute')
+      .mockRejectedValue(new Error());
 
     //act
     const promise = sut.execute(user.id, {
@@ -171,7 +178,9 @@ describe('UpdateUserUseCase', () => {
   it('should throw if passwordHasherAdapter throws', async () => {
     //arrange
     const { sut, passwordHasherAdapter } = makeSut();
-    jest.spyOn(passwordHasherAdapter, 'execute').mockRejectedValue(new Error());
+    import.meta.jest
+      .spyOn(passwordHasherAdapter, 'execute')
+      .mockRejectedValue(new Error());
 
     //act
     const promise = sut.execute(user.id, {
@@ -185,7 +194,7 @@ describe('UpdateUserUseCase', () => {
   it('should throw if postgresUpdateUserRepository throws', async () => {
     //arrange
     const { sut, postgresUpdateUserRepository } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(postgresUpdateUserRepository, 'execute')
       .mockRejectedValue(new Error());
 

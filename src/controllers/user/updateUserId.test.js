@@ -43,7 +43,7 @@ describe('UpdateUserController', () => {
   it('should call updateUserUseCase with correct params', async () => {
     //arrange
     const { sut, updateUserUseCase } = makeSut();
-    const executeSpy = jest.spyOn(updateUserUseCase, 'execute');
+    const executeSpy = import.meta.jest.spyOn(updateUserUseCase, 'execute');
 
     //act
     await sut.execute(httpRequest);
@@ -128,9 +128,11 @@ describe('UpdateUserController', () => {
     //arrange
     const { sut, updateUserUseCase } = makeSut();
 
-    jest.spyOn(updateUserUseCase, 'execute').mockImplementationOnce(() => {
-      throw new Error();
-    });
+    import.meta.jest
+      .spyOn(updateUserUseCase, 'execute')
+      .mockImplementationOnce(() => {
+        throw new Error();
+      });
 
     //act
     const result = await sut.execute(httpRequest);
@@ -143,9 +145,11 @@ describe('UpdateUserController', () => {
     //arrange
     const { sut, updateUserUseCase } = makeSut();
 
-    jest.spyOn(updateUserUseCase, 'execute').mockImplementationOnce(() => {
-      throw new EmailExistsError(faker.internet.email());
-    });
+    import.meta.jest
+      .spyOn(updateUserUseCase, 'execute')
+      .mockImplementationOnce(() => {
+        throw new EmailExistsError(faker.internet.email());
+      });
 
     //act
     const result = await sut.execute(httpRequest);
@@ -157,7 +161,7 @@ describe('UpdateUserController', () => {
   it('should return 404 if UpdateUserUseCase throws UserNotFoundError', async () => {
     //arrange
     const { sut, updateUserUseCase } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(updateUserUseCase, 'execute')
       .mockRejectedValueOnce(new UserNotFoundError(faker.string.uuid()));
 
@@ -172,9 +176,11 @@ describe('UpdateUserController', () => {
     const { sut, updateUserUseCase } = makeSut();
     const email = faker.internet.email();
 
-    jest.spyOn(updateUserUseCase, 'execute').mockImplementationOnce(() => {
-      throw new EmailExistsError(email);
-    });
+    import.meta.jest
+      .spyOn(updateUserUseCase, 'execute')
+      .mockImplementationOnce(() => {
+        throw new EmailExistsError(email);
+      });
 
     const response = await sut.execute(httpRequest);
 

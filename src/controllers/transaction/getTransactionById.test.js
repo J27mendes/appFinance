@@ -38,7 +38,7 @@ describe('Get Transaction By User Id Controller', () => {
   it('should call getUserByIdUseCase witch correct params', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    const executeSpy = jest.spyOn(getUserByIdUseCase, 'execute');
+    const executeSpy = import.meta.jest.spyOn(getUserByIdUseCase, 'execute');
     const userId = faker.string.uuid();
 
     //act
@@ -79,7 +79,7 @@ describe('Get Transaction By User Id Controller', () => {
   it('should return 404 when user is not found', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(getUserByIdUseCase, 'execute')
       .mockRejectedValueOnce(new UserNotFoundError('Transaction is not found'));
 
@@ -95,7 +95,9 @@ describe('Get Transaction By User Id Controller', () => {
   it('should return 500 when exist a server error', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    jest.spyOn(getUserByIdUseCase, 'execute').mockRejectedValue(new Error());
+    import.meta.jest
+      .spyOn(getUserByIdUseCase, 'execute')
+      .mockRejectedValue(new Error());
 
     //act
     const response = await sut.execute({

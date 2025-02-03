@@ -33,7 +33,7 @@ describe('DeleteUserUseCase', () => {
   it('should call DeleteUserUseCase with correct params', async () => {
     //arrange
     const { sut, deleteUserRepository } = makeSut();
-    const executeSpy = jest.spyOn(deleteUserRepository, 'execute');
+    const executeSpy = import.meta.jest.spyOn(deleteUserRepository, 'execute');
     const userId = user.id;
 
     //act
@@ -49,7 +49,7 @@ describe('DeleteUserUseCase', () => {
     const userId = user.id;
     const userNotFoundError = new UserNotFoundError(userId);
 
-    jest
+    import.meta.jest
       .spyOn(deleteUserRepository, 'execute')
       .mockRejectedValueOnce(userNotFoundError);
 

@@ -75,7 +75,10 @@ describe('Create Transaction Controller', () => {
   it('should call CreateTransactionUseCase witch correct params', async () => {
     //arrange
     const { sut, createTransactionUseCase } = makeSut();
-    const executeSpy = jest.spyOn(createTransactionUseCase, 'execute');
+    const executeSpy = import.meta.jest.spyOn(
+      createTransactionUseCase,
+      'execute',
+    );
 
     //act
     await sut.execute(baseHttpRequest);
@@ -199,7 +202,7 @@ describe('Create Transaction Controller', () => {
   it('should return 500 when createTransactionUseCase throws', async () => {
     //arrange
     const { sut, createTransactionUseCase } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(createTransactionUseCase, 'execute')
       .mockRejectedValueOnce(new Error());
 
@@ -221,7 +224,7 @@ describe('Create Transaction Controller', () => {
       },
     ]);
 
-    jest
+    import.meta.jest
       .spyOn(createTransactionUseCase, 'execute')
       .mockImplementationOnce(() => {
         throw validationError;
@@ -268,7 +271,7 @@ describe('Create Transaction Controller', () => {
   it('should return a formatted error response when server error occurs', async () => {
     //arrange
     const { sut, createTransactionUseCase } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(createTransactionUseCase, 'execute')
       .mockRejectedValueOnce(new Error('Internal Error'));
 

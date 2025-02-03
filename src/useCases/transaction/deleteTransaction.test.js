@@ -37,7 +37,7 @@ describe('DeleteTransaction', () => {
     const transactionId = transaction.id;
     const userNotFoundError = new UserNotFoundError(transactionId);
 
-    jest
+    import.meta.jest
       .spyOn(deleteTransactionRepository, 'execute')
       .mockRejectedValueOnce(userNotFoundError);
 

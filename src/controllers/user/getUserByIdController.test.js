@@ -39,7 +39,7 @@ describe('GetUserByIdController', () => {
   it('should call getUserByIdUseCase with correct params', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    const executeSpy = jest.spyOn(getUserByIdUseCase, 'execute');
+    const executeSpy = import.meta.jest.spyOn(getUserByIdUseCase, 'execute');
     //act
     await sut.execute(httpRequest);
     //assert
@@ -61,7 +61,9 @@ describe('GetUserByIdController', () => {
   it('Should return 404 id user is not found', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    jest.spyOn(getUserByIdUseCase, 'execute').mockResolvedValue(null);
+    import.meta.jest
+      .spyOn(getUserByIdUseCase, 'execute')
+      .mockResolvedValue(null);
 
     //act
     const result = await sut.execute(httpRequest);
@@ -73,7 +75,7 @@ describe('GetUserByIdController', () => {
   it('Should return 500 if getUserByIdUseCase an throws', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
-    jest
+    import.meta.jest
       .spyOn(getUserByIdUseCase, 'execute')
       .mockRejectedValueOnce(new Error());
 
