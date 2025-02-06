@@ -1,4 +1,4 @@
-import { EmailExistsError } from '../../errors/user.js';
+import { EmailExistsError } from '../../errors/index.js';
 
 export class UpdateUserUseCase {
   constructor(
