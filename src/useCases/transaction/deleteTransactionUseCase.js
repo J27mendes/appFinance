@@ -1,5 +1,4 @@
 import { TransactionNotFoundError } from '../../errors/transactionNotFoundError.js';
-// import { UserNotFoundError } from '../../errors/userNotFoundError.js'
 
 export class DeleteTransactionUseCase {
   constructor(deleteTransactionRepository) {
