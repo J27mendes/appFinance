@@ -15,14 +15,30 @@ describe('LoginUserUseCase', () => {
     }
   }
 
+  class TokensGeneratorAdapterStub {
+    execute() {
+      return {
+        accesToken: 'any_access_token',
+        refreshToken: 'any_refresh_token',
+      };
+    }
+  }
+
   const makeSut = () => {
     const postgresCompareEmailStub = new PostgresCompareEmailStub();
     const passwordComparatorAdapterStub = new PasswordComparatorAdapterStub();
+    const tokensGeneratorAdapterStub = new TokensGeneratorAdapterStub();
     const sut = new LoginUserUseCase(
       postgresCompareEmailStub,
       passwordComparatorAdapterStub,
+      tokensGeneratorAdapterStub,
     );
-    return { sut, postgresCompareEmailStub, passwordComparatorAdapterStub };
+    return {
+      sut,
+      postgresCompareEmailStub,
+      passwordComparatorAdapterStub,
+      tokensGeneratorAdapterStub,
+    };
   };
 
   it('should throw UserNotFoundError if user is not found', async () => {
@@ -51,5 +67,12 @@ describe('LoginUserUseCase', () => {
 
     //assert
     await expect(promise).rejects.toThrow(new InvalidPasswordError());
+  });
+
+  it('should return user with tokens', async () => {
+    const { sut } = makeSut();
+    const result = await sut.execute('any_email', 'any_password');
+    expect(result.tokens.accesToken).toBeDefined();
+    expect(result.tokens.refreshToken).toBeDefined();
   });
 });
