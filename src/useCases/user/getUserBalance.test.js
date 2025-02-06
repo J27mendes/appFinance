@@ -1,5 +1,5 @@
 import { GetUserBalanceUseCase } from './getUserBalanceUseCase';
-import { UserNotFoundError } from '../../errors/userNotFoundError';
+import { UserNotFoundError } from '../../errors/index.js';
 import { userBalance } from '../../tests/fixtures/index';
 import { user } from '../../tests/fixtures/index';
 

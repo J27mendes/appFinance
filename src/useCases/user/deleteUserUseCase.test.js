@@ -1,5 +1,5 @@
 import { DeleteUserUseCase } from './deleteUserUseCase.js';
-import { UserNotFoundError } from '../../errors/userNotFoundError.js';
+import { UserNotFoundError } from '../../errors/index.js';
 import { user } from '../../tests/fixtures/index.js';
 
 describe('DeleteUserUseCase', () => {

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserUseCase } from './updateUser';
-import { EmailExistsError } from '../../errors/user';
+import { EmailExistsError } from '../../errors/index';
 import { user } from '../../tests/fixtures/index';
 
 describe('UpdateUserUseCase', () => {

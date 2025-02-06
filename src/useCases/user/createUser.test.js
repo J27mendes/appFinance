@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from './createUser.js';
-import { EmailExistsError } from '../../errors/user.js';
+import { EmailExistsError } from '../../errors/index.js';
 import { user } from '../../tests/fixtures/index.js';
 
 describe('CreateUserUseCase', () => {
