@@ -1,5 +1,4 @@
-import { EmailExistsError } from '../../errors/user.js';
-import { UserNotFoundError } from '../../errors/userNotFoundError.js';
+import { UserNotFoundError, EmailExistsError } from '../../errors/index.js';
 import { updateUserSchena } from '../../schemas/user.js';
 import {
   badRequest,

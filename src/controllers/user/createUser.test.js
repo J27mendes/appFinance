@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { CreateUserController } from './userCreate.js';
-import { EmailExistsError } from '../../errors/user.js';
+import { EmailExistsError } from '../../errors/index.js';
 import { ZodError } from 'zod';
 
 describe('Create User Controller', () => {

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { DeleteUserController } from './deleteUserById';
-import { UserNotFoundError } from '../../errors/userNotFoundError.js';
+import { UserNotFoundError } from '../../errors/index.js';
 
 describe('DeleteUserController', () => {
   class deleteUserUseCaseStub {

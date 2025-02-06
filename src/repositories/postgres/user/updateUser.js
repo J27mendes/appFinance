@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { prisma } from '../../../../prisma/prisma.js';
-import { UserNotFoundError } from '../../../errors/userNotFoundError.js';
+import { UserNotFoundError } from '../../../errors/index.js';
 export class PostgresUpdateUserRepository {
   async execute(userId, updateUserParams) {
     try {

@@ -1,5 +1,4 @@
-import { EmailExistsError } from '../../errors/user.js';
-import { UserNotFoundError } from '../../errors/userNotFoundError.js';
+import { EmailExistsError, UserNotFoundError } from '../../errors/index.js';
 import { UpdateUserController } from '../user/updateUserId.js';
 import { faker } from '@faker-js/faker';
 

@@ -1,4 +1,4 @@
-import { EmailExistsError } from '../../errors/user.js';
+import { EmailExistsError } from '../../errors/emailExistsError.js';
 import { createUserSchema } from '../../schemas/index.js';
 import { badRequest, created, serverError } from '../helpers/index.js';
 import { ZodError } from 'zod';
