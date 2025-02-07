@@ -3,6 +3,7 @@ import {
   makeDeleteUserById,
   makeGetUserBalanceController,
   makeGetUserById,
+  makeLoginUserController,
   makePostUser,
   makeUpdateUserById,
 } from '../factores/controllers/index.js';
@@ -44,6 +45,14 @@ userRouter.delete('/:userId', async (request, response) => {
   const deleteUserController = makeDeleteUserById();
 
   const { statusCode, body } = await deleteUserController.execute(request);
+
+  response.status(statusCode).send(body);
+});
+
+userRouter.post('/login', async (request, response) => {
+  const loginUserController = makeLoginUserController();
+
+  const { statusCode, body } = await loginUserController.execute(request);
 
   response.status(statusCode).send(body);
 });
