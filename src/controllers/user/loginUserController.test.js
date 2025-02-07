@@ -67,4 +67,20 @@ describe('LoginUserController', () => {
     //assert
     expect(response.statusCode).toBe(404);
   });
+
+  it('should return 500 if a server error occurs', async () => {
+    //arrange
+    const { sut, loginUserUseCase } = makeSut();
+    import.meta.jest
+      .spyOn(loginUserUseCase, 'execute')
+      .mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+    //act
+    const result = await sut.execute(httpRequest);
+
+    //assert
+    expect(result.statusCode).toBe(500);
+  });
 });
