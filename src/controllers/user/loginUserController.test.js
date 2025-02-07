@@ -1,4 +1,4 @@
-import { InvalidPasswordError } from '../../errors';
+import { InvalidPasswordError, UserNotFoundError } from '../../errors';
 import { user } from '../../tests/fixtures';
 import { LoginUserController } from './loginUser';
 
@@ -52,5 +52,19 @@ describe('LoginUserController', () => {
 
     //assert
     expect(response.statusCode).toBe(401);
+  });
+
+  it('should return 401 if password is invalid', async () => {
+    //arrange
+    const { sut, loginUserUseCase } = makeSut();
+    import.meta.jest
+      .spyOn(loginUserUseCase, 'execute')
+      .mockRejectedValueOnce(new UserNotFoundError());
+
+    //act
+    const response = await sut.execute(httpRequest);
+
+    //assert
+    expect(response.statusCode).toBe(404);
   });
 });
