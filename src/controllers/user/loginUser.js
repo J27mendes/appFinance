@@ -1,7 +1,13 @@
 import { ZodError } from 'zod';
 import { loginSchema } from '../../schemas/index';
-import { badRequest, ok, serverError, unauthorized } from '../helpers';
-import { InvalidPasswordError } from '../../errors';
+import {
+  badRequest,
+  notFound,
+  ok,
+  serverError,
+  unauthorized,
+} from '../helpers';
+import { InvalidPasswordError, UserNotFoundError } from '../../errors';
 
 export class LoginUserController {
   constructor(loginUserUseCase) {
@@ -25,6 +31,12 @@ export class LoginUserController {
 
       if (error instanceof InvalidPasswordError) {
         return unauthorized();
+      }
+
+      if (error instanceof UserNotFoundError) {
+        return notFound({
+          message: 'User not found',
+        });
       }
 
       return serverError;
