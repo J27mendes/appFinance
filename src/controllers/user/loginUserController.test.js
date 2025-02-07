@@ -1,7 +1,14 @@
+import { InvalidPasswordError } from '../../errors';
 import { user } from '../../tests/fixtures';
 import { LoginUserController } from './loginUser';
 
 describe('LoginUserController', () => {
+  const httpRequest = {
+    body: {
+      email: 'any@email.com',
+      password: 'any_password',
+    },
+  };
   class LoginUserUseCaseStub {
     async execute() {
       return {
@@ -21,16 +28,29 @@ describe('LoginUserController', () => {
   };
 
   it('should return 200 with user and tokens', async () => {
+    //arrange
     const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'any@email.com',
-        password: 'any_password',
-      },
-    };
+
+    //act
     const response = await sut.execute(httpRequest);
+
+    //assert
     expect(response.statusCode).toBe(200);
     expect(response.body.tokens.accessToken).toBe('any_access_token');
     expect(response.body.tokens.refreshToken).toBe('any_refresh_token');
+  });
+
+  it('should return 401 if password is invalid', async () => {
+    //arrange
+    const { sut, loginUserUseCase } = makeSut();
+    import.meta.jest
+      .spyOn(loginUserUseCase, 'execute')
+      .mockRejectedValueOnce(new InvalidPasswordError());
+
+    //act
+    const response = await sut.execute(httpRequest);
+
+    //assert
+    expect(response.statusCode).toBe(401);
   });
 });
