@@ -19,6 +19,13 @@ export const badRequest = (body) => {
   };
 };
 
+export const unauthorized = () => ({
+  statusCode: 401,
+  body: {
+    message: 'Unauthorized',
+  },
+});
+
 export const notFound = (body) => {
   return {
     statusCode: 404,
