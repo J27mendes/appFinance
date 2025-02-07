@@ -39,7 +39,7 @@ export class LoginUserController {
         });
       }
 
-      return serverError;
+      return serverError();
     }
   }
 }
