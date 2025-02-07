@@ -1,6 +1,6 @@
 import { DeleteTransactionUseCase } from './deleteTransactionUseCase';
-import { UserNotFoundError } from '../../errors/userNotFoundError';
 import { transaction } from '../../tests/fixtures/index';
+import { TransactionNotFoundError } from '../../errors/index';
 
 describe('DeleteTransaction', () => {
   class DeleteTransactionRepositoryStub {
@@ -30,18 +30,17 @@ describe('DeleteTransaction', () => {
     expect(result).toEqual({ transaction });
   });
 
-  it('should the user cannot be found, receive the error UserNotFoundError', async () => {
+  it('should the user cannot be found, receive the error TransactionNotFoundError', async () => {
     //arrange
     const { sut, deleteTransactionRepository } = makeSut();
-
     const transactionId = transaction.id;
-    const userNotFoundError = new UserNotFoundError(transactionId);
-
     import.meta.jest
       .spyOn(deleteTransactionRepository, 'execute')
-      .mockRejectedValueOnce(userNotFoundError);
+      .mockResolvedValueOnce(null);
 
     // Act & Assert
-    await expect(sut.execute(transactionId)).rejects.toThrow(UserNotFoundError);
+    await expect(sut.execute(transactionId)).rejects.toThrow(
+      TransactionNotFoundError,
+    );
   });
 });
