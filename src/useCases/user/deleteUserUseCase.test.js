@@ -47,11 +47,10 @@ describe('DeleteUserUseCase', () => {
     //arrange
     const { sut, deleteUserRepository } = makeSut();
     const userId = user.id;
-    const userNotFoundError = new UserNotFoundError(userId);
 
     import.meta.jest
       .spyOn(deleteUserRepository, 'execute')
-      .mockRejectedValueOnce(userNotFoundError);
+      .mockResolvedValueOnce(null);
 
     // Act & Assert
     await expect(sut.execute(userId)).rejects.toThrow(UserNotFoundError);
