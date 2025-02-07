@@ -1,6 +1,8 @@
+import { ZodError } from 'zod';
 import { InvalidPasswordError, UserNotFoundError } from '../../errors';
 import { user } from '../../tests/fixtures';
 import { LoginUserController } from './loginUser';
+import { loginSchema } from '../../schemas/index';
 
 describe('LoginUserController', () => {
   const httpRequest = {
@@ -54,7 +56,7 @@ describe('LoginUserController', () => {
     expect(response.statusCode).toBe(401);
   });
 
-  it('should return 401 if password is invalid', async () => {
+  it('should return 404 if user not found', async () => {
     //arrange
     const { sut, loginUserUseCase } = makeSut();
     import.meta.jest
@@ -82,5 +84,28 @@ describe('LoginUserController', () => {
 
     //assert
     expect(result.statusCode).toBe(500);
+  });
+
+  it('should return 400 if instanceof ZodError', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: { email: 'invalid-email', password: 'short' }, // Dados inválidos para disparar erro
+    };
+
+    const zodError = new ZodError([
+      { path: ['email'], message: 'Invalid email format' },
+    ]);
+
+    import.meta.jest
+      .spyOn(loginSchema, 'parseAsync')
+      .mockRejectedValueOnce(zodError);
+
+    // Act
+    const response = await sut.execute(httpRequest);
+
+    // Assert
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ message: 'Invalid email format' });
   });
 });
