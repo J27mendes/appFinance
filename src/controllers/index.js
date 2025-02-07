@@ -3,6 +3,7 @@ export * from './user/getUserById.js';
 export * from './user/updateUserId.js';
 export * from './user/deleteUserById.js';
 export * from './user/getUserBalanceController.js';
+export * from './user/loginUser.js';
 
 export * from './transaction/controllerTransaction.js';
 export * from './transaction/getTransactionUserByIdController.js';

@@ -1,13 +1,13 @@
 import { ZodError } from 'zod';
-import { loginSchema } from '../../schemas/index';
+import { loginSchema } from '../../schemas/index.js';
 import {
   badRequest,
   notFound,
   ok,
   serverError,
   unauthorized,
-} from '../helpers';
-import { InvalidPasswordError, UserNotFoundError } from '../../errors';
+} from '../helpers/index.js';
+import { InvalidPasswordError, UserNotFoundError } from '../../errors/index.js';
 
 export class LoginUserController {
   constructor(loginUserUseCase) {
