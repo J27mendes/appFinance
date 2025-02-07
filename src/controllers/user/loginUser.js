@@ -1,6 +1,7 @@
 import { ZodError } from 'zod';
 import { loginSchema } from '../../schemas/index';
-import { badRequest, ok, serverError } from '../helpers';
+import { badRequest, ok, serverError, unauthorized } from '../helpers';
+import { InvalidPasswordError } from '../../errors';
 
 export class LoginUserController {
   constructor(loginUserUseCase) {
@@ -21,6 +22,11 @@ export class LoginUserController {
           message: error.errors[0].message,
         });
       }
+
+      if (error instanceof InvalidPasswordError) {
+        return unauthorized();
+      }
+
       return serverError;
     }
   }
