@@ -33,7 +33,7 @@ export class DeleteUserController {
 
       return ok({
         message: 'User deleted successfully',
-        transaction: deletedUser,
+        deletedUser,
       });
     } catch (error) {
       if (error instanceof UserNotFoundError) {
