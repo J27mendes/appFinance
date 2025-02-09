@@ -46,4 +46,26 @@ describe('auth middleares', () => {
     expect(response.send).toHaveBeenCalledWith({ message: 'Unauthorized' });
     expect(next).not.toHaveBeenCalled();
   });
+
+  it('should return 401 if the token is not in the correct format', async () => {
+    //arrange
+    const request = {
+      headers: { authorization: 'Bearer TokenInvalido' },
+    };
+
+    //act
+    const response = {
+      status: import.meta.jest.fn().mockReturnThis(),
+      send: import.meta.jest.fn(),
+    };
+
+    const next = import.meta.jest.fn();
+
+    await auth(request, response, next);
+
+    //assert
+    expect(response.status).toHaveBeenCalledWith(401);
+    expect(response.send).toHaveBeenCalledWith({ message: 'Unauthorized' });
+    expect(next).not.toHaveBeenCalled();
+  });
 });
