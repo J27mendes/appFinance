@@ -9,3 +9,4 @@ export * from '../postgres/transaction/createTransaction.js';
 export * from '../postgres/transaction/getTransactionByUserId.js';
 export * from '../postgres/transaction/updateTransactionRepository.js';
 export * from '../postgres/transaction/deleteTransaction.js';
+export * from '../postgres/transaction/getTransactionById.js';

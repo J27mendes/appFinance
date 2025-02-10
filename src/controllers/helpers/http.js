@@ -26,6 +26,13 @@ export const unauthorized = () => ({
   },
 });
 
+export const forbidden = () => ({
+  statusCode: 403,
+  body: {
+    message: 'Forbidden',
+  },
+});
+
 export const notFound = (body) => {
   return {
     statusCode: 404,
