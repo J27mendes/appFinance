@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { UpdateTransactionController } from './updateTransactionController';
 import { TransactionNotFoundError } from '../../errors/transactionNotFoundError';
+import { ForbiddenError } from '../../errors';
+import { forbidden } from '../helpers';
 
 describe('Update Transaction Controller', () => {
   class UpdateTransactionUseCaseStub {
@@ -136,5 +138,24 @@ describe('Update Transaction Controller', () => {
 
     //assert
     expect(response.statusCode).toBe(404);
+  });
+
+  it('should return forbidden() if UpdateTransactionUseCase throws ForbiddenError', async () => {
+    // Arrange
+    const { sut, updateTransactionUseCase } = makeSut();
+    import.meta.jest
+      .spyOn(updateTransactionUseCase, 'execute')
+      .mockRejectedValueOnce(new ForbiddenError());
+
+    const httpRequest = {
+      params: { transactionId: faker.string.uuid() },
+      body: { name: 'Updated Transaction', amount: 100 },
+    };
+
+    // Act
+    const response = await sut.execute(httpRequest);
+
+    // Assert
+    expect(response).toEqual(forbidden());
   });
 });
