@@ -45,6 +45,19 @@ describe('RefreshTokenUseCase', () => {
     });
   });
 
+  it('should throw unauthorized if null', () => {
+    //arrange
+    const { sut, tokenVerifierAdapter } = makeSut();
+    import.meta.jest
+      .spyOn(tokenVerifierAdapter, 'execute')
+      .mockImplementationOnce(null);
+
+    //act & assert
+    expect(() => sut.execute('any_refresh_token')).toThrow(
+      new UnauthorizedError(),
+    );
+  });
+
   it('should throw if tokenVerifyAdapter throws', () => {
     //arrange
     const { sut, tokenVerifierAdapter } = makeSut();
