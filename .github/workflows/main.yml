@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "DATABASE_URL=postgresql://postgres:hardcore8*@localhost:5433/appfinance" >> .env.test
           echo "JWT_ACCESS_TOKEN_SECRET=secret" >> .env.test
-          echo 'JWT_REFRESH_TOKEN_SECRET=secret2' >> .env.test
+          echo "JWT_REFRESH_TOKEN_SECRET=secret2" >> .env.test
 
       - name: Install dependencies
         run: npm install
