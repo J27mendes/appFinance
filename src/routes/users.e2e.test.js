@@ -163,13 +163,9 @@ describe('User Routers E2E tests', () => {
         id: undefined,
       });
 
-    console.log('Usuário criado:', createdUser);
-
     const response = await request(app).post('/api/users/refreshtoken').send({
       refreshToken: createdUser.tokens.refreshToken,
     });
-
-    console.log('Resposta da API:', response.status, response.body);
 
     expect(response.status).toBe(200);
     expect(response.body.tokens.accessToken).toBeDefined();
