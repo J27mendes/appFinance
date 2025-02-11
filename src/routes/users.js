@@ -5,6 +5,7 @@ import {
   makeGetUserById,
   makeLoginUserController,
   makePostUser,
+  makeRefreshTokenController,
   makeUpdateUserById,
 } from '../factores/controllers/index.js';
 import { auth } from '../middlewares/auth.js';
@@ -74,6 +75,14 @@ userRouter.post('/login', async (request, response) => {
   const loginUserController = makeLoginUserController();
 
   const { statusCode, body } = await loginUserController.execute(request);
+
+  response.status(statusCode).send(body);
+});
+
+userRouter.post('/refreshtoken', async (request, response) => {
+  const refreshTokenController = makeRefreshTokenController();
+
+  const { statusCode, body } = await refreshTokenController.execute(request);
 
   response.status(statusCode).send(body);
 });
