@@ -29,4 +29,14 @@ describe('TokenVerifierAdapter', () => {
     expect(result).toEqual(payload);
     expect(jwt.verify).toHaveBeenCalledWith(token, secret);
   });
+
+  it('should throw an error when token is invalid', () => {
+    const { sut } = makeSut();
+    import.meta.jest.spyOn(jwt, 'verify').mockImplementation(() => {
+      throw new Error('Invalid token');
+    });
+
+    expect(() => sut.execute(token, secret)).toThrow('Invalid token');
+    expect(jwt.verify).toHaveBeenCalledWith(token, secret);
+  });
 });
