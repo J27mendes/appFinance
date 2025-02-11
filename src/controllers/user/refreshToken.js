@@ -24,7 +24,6 @@ export class RefreshTokenController {
       if (error instanceof UnauthorizedError) {
         return unauthorized();
       }
-
       return serverError();
     }
   }
