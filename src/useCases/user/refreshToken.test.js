@@ -1,3 +1,4 @@
+import { UnauthorizedError } from '../../errors';
 import { RefreshTokenUseCase } from './refreshToken';
 
 describe('RefreshTokenUseCase', () => {
@@ -42,5 +43,20 @@ describe('RefreshTokenUseCase', () => {
       accessToken: 'any_access_token',
       refreshToken: 'any_refresh_token',
     });
+  });
+
+  it('should throw if tokenVerifyAdapter throws', () => {
+    //arrange
+    const { sut, tokenVerifierAdapter } = makeSut();
+    import.meta.jest
+      .spyOn(tokenVerifierAdapter, 'execute')
+      .mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+    //act & assert
+    expect(() => sut.execute('any_refresh_token')).toThrow(
+      new UnauthorizedError(),
+    );
   });
 });
