@@ -35,4 +35,19 @@ describe('RefreshTokenController', () => {
     //assert
     expect(response.statusCode).toBe(400);
   });
+
+  it('should return 200 if refresh token is valid', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        refreshToken: 'valid_refresh_token',
+      },
+    };
+
+    //act
+    const response = await sut.execute(httpRequest);
+
+    //assert
+    expect(response.statusCode).toBe(200);
+  });
 });
