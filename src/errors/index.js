@@ -3,3 +3,4 @@ export * from './emailExistsError.js';
 export * from './userNotFoundError.js';
 export * from './invalidPasswordError.js';
 export * from './forbiddenError.js';
+export * from './unauthorizedError.js';
