@@ -50,3 +50,9 @@ export const createTransactionSchema = z.object({
 export const updateTransactionSchema = createTransactionSchema
   .omit({ user_id: true })
   .partial();
+
+export const getTransactionByUserIdSchema = z.object({
+  user_id: z.string().uuid(),
+  from: z.string().transform((val) => new Date(val)),
+  to: z.string().transform((val) => new Date(val)),
+});
