@@ -82,12 +82,18 @@ describe('GetTransactionByIdUseCase', () => {
     );
 
     const id = user.id;
+    const from = '2024-06-27';
+    const to = '2024-07-08';
 
     //act
-    await sut.execute(id);
+    await sut.execute(id, from, to);
 
     //assert
-    expect(postgresGetTransactionByIdRepositorySpy).toHaveBeenCalledWith(id);
+    expect(postgresGetTransactionByIdRepositorySpy).toHaveBeenCalledWith(
+      id,
+      from,
+      to,
+    );
   });
 
   it('should throw if PostgresGetTransactionByIdRepository throws', async () => {

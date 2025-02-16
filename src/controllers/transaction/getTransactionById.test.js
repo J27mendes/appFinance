@@ -49,7 +49,7 @@ describe('Get Transaction By User Id Controller', () => {
     });
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(userId);
+    expect(executeSpy).toHaveBeenCalledWith(userId, from, to);
   });
 
   it('should return 400 when missing UserId params', async () => {
