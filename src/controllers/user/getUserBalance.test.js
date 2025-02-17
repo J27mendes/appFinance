@@ -20,6 +20,10 @@ describe('GetUserBalanceController', () => {
     params: {
       userId: faker.string.uuid(),
     },
+    query: {
+      from: '2024-01-02',
+      to: '2024-01-22',
+    },
   };
 
   it('Should return 200 when getting user balance', async () => {
@@ -42,7 +46,11 @@ describe('GetUserBalanceController', () => {
     await sut.execute(httpRequest);
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId);
+    expect(executeSpy).toHaveBeenCalledWith(
+      httpRequest.params.userId,
+      httpRequest.query.from,
+      httpRequest.query.to,
+    );
   });
 
   it('Should return 400 if id is not valid', async () => {
@@ -50,7 +58,10 @@ describe('GetUserBalanceController', () => {
     const { sut } = makeSut();
 
     //act
-    const result = await sut.execute({ params: { userId: 'id_invalid' } });
+    const result = await sut.execute({
+      params: { userId: 'id_invalid' },
+      query: { from: '2024-01-02', to: '2024-01-22' },
+    });
 
     //assert
     expect(result.statusCode).toBe(400);

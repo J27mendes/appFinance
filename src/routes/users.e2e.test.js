@@ -7,6 +7,9 @@ import { TransactionType } from '@prisma/client';
 const request = supertest;
 
 describe('User Routers E2E tests', () => {
+  const from = '2024-01-02';
+  const to = '2024-01-22';
+
   it('POST /users should return 201 user is created', async () => {
     const response = await request(app)
       .post('/api/users')
@@ -85,7 +88,7 @@ describe('User Routers E2E tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
+        date: new Date(to),
         type: TransactionType.EARNING,
         amount: 10000,
       });
@@ -96,7 +99,7 @@ describe('User Routers E2E tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
+        date: new Date(from),
         type: TransactionType.EXPENSE,
         amount: 2000,
       });
@@ -107,13 +110,13 @@ describe('User Routers E2E tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
+        date: new Date(from),
         type: TransactionType.INVESTMENT,
         amount: 1000,
       });
 
     const response = await request(app)
-      .get(`/api/users/balance`)
+      .get(`/api/users/balance?from=${from}&to=${to}`)
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
