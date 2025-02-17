@@ -53,6 +53,16 @@ export const updateTransactionSchema = createTransactionSchema
 
 export const getTransactionByUserIdSchema = z.object({
   user_id: z.string().uuid(),
-  from: z.string().transform((val) => new Date(val)),
-  to: z.string().transform((val) => new Date(val)),
+  from: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid 'from' date format",
+    })
+    .transform((val) => new Date(val)),
+  to: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid 'to' date format",
+    })
+    .transform((val) => new Date(val)),
 });
