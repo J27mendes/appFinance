@@ -124,6 +124,9 @@ describe('User Routers E2E tests', () => {
       earnings: '10000',
       expenses: '2000',
       investments: '1000',
+      earningsPercentage: '76',
+      expensesPercentage: '15',
+      investmentsPercentage: '7',
       balance: '7000',
     });
   });
