@@ -5,8 +5,6 @@ import { TransactionType } from '@prisma/client';
 
 describe('Transaction Routes E2E Tests', () => {
   const request = supertest;
-  const from = '2024-01-01';
-  const to = '2024-02-20';
 
   it('POST /api/transactions should return 201 when creating a transaction succefully', async () => {
     const { body: createdUser } = await request(app)
@@ -27,21 +25,31 @@ describe('Transaction Routes E2E Tests', () => {
     expect(response.body.amount).toBe(String(transaction.amount));
   });
 
-  it('GET /api/transaction?userId should return 200 when fetching transaction successfully', async () => {
+  it('GET /api/transaction?user_id should return 200 when fetching transaction successfully', async () => {
     const { body: createdUser } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
 
+    const from = '2024-07-01';
+    const to = '2024-08-01';
+    const date = '2024-07-15';
+
     const { body: createdTransaction } = await request(app)
       .post('/api/transactions')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
-      .send({ ...transaction, user_id: createdUser.id, id: undefined });
+      .send({
+        ...transaction,
+        date: new Date(date),
+        user_id: createdUser.id,
+        id: undefined,
+      });
 
     const response = await request(app)
-      .get(`/api/transactions?from=${from}&to=${to}`)
+      .get(`/api/transactions?user_id=${createdUser.id}&from=${from}&to=${to}`)
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
+    expect(response.body.length).toBeGreaterThan(0);
     expect(response.body[0].id).toBe(createdTransaction.id);
   });
 
