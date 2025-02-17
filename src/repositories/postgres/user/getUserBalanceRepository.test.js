@@ -5,6 +5,9 @@ import { user as fakeUser } from '../../../tests/fixtures/index.js';
 import { PostgresGetUserBalanceRepository } from './getUserBalanceRepository.js';
 
 describe('PostgresGetUserBalanceRepository', () => {
+  const from = '2024-01-01';
+  const to = '2024-01-22';
+
   it('should get user balance on db', async () => {
     //arrange
     const user = await prisma.user.create({ data: fakeUser });
@@ -13,42 +16,42 @@ describe('PostgresGetUserBalanceRepository', () => {
       data: [
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(from),
           amount: 8500,
           type: TransactionType.EARNING,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(from),
           amount: 8200,
           type: TransactionType.EARNING,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(to),
           amount: 1000,
           type: TransactionType.EXPENSE,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(to),
           amount: 1500,
           type: TransactionType.EXPENSE,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(from),
           amount: 2300,
           type: TransactionType.INVESTMENT,
           user_id: user.id,
         },
         {
           name: faker.string.sample(),
-          date: faker.date.recent(),
+          date: new Date(from),
           amount: 3300,
           type: TransactionType.INVESTMENT,
           user_id: user.id,
@@ -59,7 +62,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     const sut = new PostgresGetUserBalanceRepository();
 
     //act
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user.id, from, to);
 
     //assert
     expect(result.earnings.toString()).toBe('16700');
@@ -74,7 +77,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     const primsaSpy = import.meta.jest.spyOn(prisma.transaction, 'aggregate');
 
     //act
-    await sut.execute(fakeUser.id);
+    await sut.execute(fakeUser.id, from, to);
 
     //assert
     expect(primsaSpy).toHaveBeenCalledTimes(3);
@@ -82,6 +85,10 @@ describe('PostgresGetUserBalanceRepository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionType.EARNING,
+        date: {
+          gte: new Date(from),
+          lte: new Date(to),
+        },
       },
       _sum: {
         amount: true,
@@ -91,6 +98,10 @@ describe('PostgresGetUserBalanceRepository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionType.EXPENSE,
+        date: {
+          gte: new Date(from),
+          lte: new Date(to),
+        },
       },
       _sum: {
         amount: true,
@@ -100,6 +111,10 @@ describe('PostgresGetUserBalanceRepository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionType.INVESTMENT,
+        date: {
+          gte: new Date(from),
+          lte: new Date(to),
+        },
       },
       _sum: {
         amount: true,
@@ -115,7 +130,7 @@ describe('PostgresGetUserBalanceRepository', () => {
       .mockRejectedValueOnce(new Error());
 
     //act
-    const promise = sut.execute(fakeUser.id);
+    const promise = sut.execute(fakeUser.id, from, to);
 
     //assert
     await expect(promise).rejects.toThrow();
@@ -127,7 +142,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     const sut = new PostgresGetUserBalanceRepository();
 
     // Act
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user.id, from, to);
 
     // Assert
     expect(result.earnings.toString()).toBe('0');
