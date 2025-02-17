@@ -60,3 +60,19 @@ export const refreshTokenSchema = z.object({
     message: 'Refresh token is required.',
   }),
 });
+
+export const getUserBalanceSchema = z.object({
+  user_id: z.string().uuid(),
+  from: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid 'from' date format",
+    })
+    .transform((val) => new Date(val)),
+  to: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid 'to' date format",
+    })
+    .transform((val) => new Date(val)),
+});
