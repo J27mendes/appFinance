@@ -15,7 +15,7 @@ export class GetTransactionByUserIdController {
 
   async execute(httpRequest) {
     try {
-      const userId = httpRequest.query.userId;
+      const userId = httpRequest.query.user_id;
       const from = httpRequest.query.from;
       const to = httpRequest.query.to;
 
