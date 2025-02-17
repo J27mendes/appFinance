@@ -286,7 +286,7 @@
           "200": {
             "description": "Balance by User found successfully",
             "schema": {
-              "$ref": " #/definitions/UserBalance"
+              "$ref": "#/definitions/UserBalance"
             }
           },
           "404": {
@@ -660,6 +660,18 @@
         "investments": {
           "type": "string",
           "example": "1000"
+        },
+        "earningsPercentage": {
+          "type": "string",
+          "example": "50"
+        },
+        "expensesPercentage": {
+          "type": "string",
+          "example": "25"
+        },
+        "investmentsPercentage": {
+          "type": "string",
+          "example": "25"
         },
         "balance": {
           "type": "string",
