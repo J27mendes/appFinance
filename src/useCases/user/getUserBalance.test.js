@@ -4,6 +4,8 @@ import { userBalance } from '../../tests/fixtures/index';
 import { user } from '../../tests/fixtures/index';
 
 describe('GetUserBalanceUseCase', () => {
+  const from = '2024-01-01';
+  const to = '2024-01-22';
   class GetUserBalanceRepositoryStub {
     async execute() {
       return userBalance;
@@ -31,7 +33,7 @@ describe('GetUserBalanceUseCase', () => {
     const { sut } = makeSut();
 
     //act
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user.id, from, to);
 
     //assert
     expect(result).toEqual(userBalance);
@@ -45,25 +47,10 @@ describe('GetUserBalanceUseCase', () => {
       .mockResolvedValue(null);
 
     //act
-    const promise = sut.execute(user.id);
+    const promise = sut.execute(user.id, from, to);
 
     //assert
     await expect(promise).rejects.toThrow(new UserNotFoundError(user.id));
-  });
-
-  it('should call GetUserByIdRepository with correct params', async () => {
-    //arrange
-    const { sut, getUserByIdRepository } = makeSut();
-    const getUserByIdRepositorySpy = import.meta.jest.spyOn(
-      getUserByIdRepository,
-      'execute',
-    );
-
-    //act
-    await sut.execute(user.id);
-
-    //assert
-    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(user.id);
   });
 
   it('should call GetUserBalanceRepository with correct params', async () => {
@@ -75,24 +62,10 @@ describe('GetUserBalanceUseCase', () => {
     );
 
     //act
-    await sut.execute(user.id);
+    await sut.execute(user.id, from, to);
 
     //assert
-    expect(getUserBalanceRepositorySpy).toHaveBeenCalledWith(user.id);
-  });
-
-  it('should throw if GetUserByIdRepository throws', async () => {
-    //arrange
-    const { sut, getUserByIdRepository } = makeSut();
-    import.meta.jest
-      .spyOn(getUserByIdRepository, 'execute')
-      .mockRejectedValue(new Error());
-
-    //act
-    const promise = sut.execute(user.id);
-
-    //assert
-    await expect(promise).rejects.toThrow();
+    expect(getUserBalanceRepositorySpy).toHaveBeenCalledWith(user.id, from, to);
   });
 
   it('should throw if GetUserBalanceRepository throws', async () => {
@@ -103,7 +76,7 @@ describe('GetUserBalanceUseCase', () => {
       .mockRejectedValue(new Error());
 
     //act
-    const promise = sut.execute(user.id);
+    const promise = sut.execute(user.id, from, to);
 
     //assert
     await expect(promise).rejects.toThrow();
