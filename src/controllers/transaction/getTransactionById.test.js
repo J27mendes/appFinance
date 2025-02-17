@@ -8,8 +8,8 @@ describe('Get Transaction By User Id Controller', () => {
   class GetUserByIdUseCaseStub {
     async execute() {
       return {
-        userId: faker.string.uuid(),
         id: faker.string.uuid(),
+        user_id: faker.string.uuid(),
         name: faker.commerce.productName(),
         date: faker.date.anytime().toISOString(),
         type: 'EXPENSE',
@@ -30,7 +30,7 @@ describe('Get Transaction By User Id Controller', () => {
 
     //act
     const response = await sut.execute({
-      query: { userId: faker.string.uuid(), from, to },
+      query: { user_id: faker.string.uuid(), from, to },
     });
 
     //assert
@@ -41,15 +41,15 @@ describe('Get Transaction By User Id Controller', () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
     const executeSpy = import.meta.jest.spyOn(getUserByIdUseCase, 'execute');
-    const userId = faker.string.uuid();
+    const user_id = faker.string.uuid();
 
     //act
     await sut.execute({
-      query: { userId, from, to },
+      query: { user_id, from, to },
     });
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(userId, from, to);
+    expect(executeSpy).toHaveBeenCalledWith(user_id, from, to);
   });
 
   it('should return 400 when missing UserId params', async () => {
@@ -58,7 +58,7 @@ describe('Get Transaction By User Id Controller', () => {
 
     //act
     const response = await sut.execute({
-      query: { userId: undefined, from, to },
+      query: { user_id: undefined, from, to },
     });
 
     //assert
@@ -71,7 +71,7 @@ describe('Get Transaction By User Id Controller', () => {
 
     //act
     const response = await sut.execute({
-      query: { userId: 'invalid_User_Id', from, to },
+      query: { user_id: 'invalid_User_Id', from, to },
     });
 
     //assert
@@ -87,7 +87,7 @@ describe('Get Transaction By User Id Controller', () => {
 
     //act
     const response = await sut.execute({
-      query: { userId: faker.string.uuid(), from, to },
+      query: { user_id: faker.string.uuid(), from, to },
     });
 
     //assert
@@ -103,7 +103,7 @@ describe('Get Transaction By User Id Controller', () => {
 
     //act
     const response = await sut.execute({
-      query: { userId: faker.string.uuid(), from, to },
+      query: { user_id: faker.string.uuid(), from, to },
     });
 
     //assert
