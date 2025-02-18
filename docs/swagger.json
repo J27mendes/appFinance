@@ -59,7 +59,9 @@
             "BearerAuth": []
           }
         ]
-      },
+      }
+    },
+    "/api/users/me": {
       "get": {
         "summary": "Get authenticated user",
         "tags": ["User"],
@@ -254,7 +256,7 @@
         ]
       }
     },
-    "/api/users/balance": {
+    "/api/users/me/balance": {
       "get": {
         "summary": "Get balance authenticated",
         "tags": ["User"],
@@ -309,7 +311,7 @@
         ]
       }
     },
-    "/api/transactions": {
+    "/api/transactions/me": {
       "post": {
         "summary": "Create a new transaction for the authenticated user",
         "tags": ["Transaction"],
@@ -424,9 +426,9 @@
         ]
       }
     },
-    "/api/transactions/{transactionId}": {
+    "/api/transactions/me/{transactionId}": {
       "patch": {
-        "summary": "Update a new transaction by Transaction Id",
+        "summary": "Update a new transaction by Transaction Id of the authenticated user",
         "tags": ["Transaction"],
         "parameters": [
           {
@@ -486,7 +488,7 @@
         ]
       },
       "delete": {
-        "summary": "Delete a transaction by transaction Id",
+        "summary": "Delete a transaction by transaction Id of the authenticated user",
         "tags": ["Transaction"],
         "parameters": [
           {
