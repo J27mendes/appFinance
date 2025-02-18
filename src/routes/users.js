@@ -20,7 +20,7 @@ userRouter.post('/', async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.get('/', auth, async (request, response) => {
+userRouter.get('/me', auth, async (request, response) => {
   const getUserByIdController = makeGetUserById();
 
   const { statusCode, body } = await getUserByIdController.execute({
@@ -33,7 +33,7 @@ userRouter.get('/', auth, async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.get('/balance', auth, async (request, response) => {
+userRouter.get('/me/balance', auth, async (request, response) => {
   const getUserBalanceController = makeGetUserBalanceController();
 
   const { statusCode, body } = await getUserBalanceController.execute({
@@ -50,7 +50,7 @@ userRouter.get('/balance', auth, async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.patch('/', auth, async (request, response) => {
+userRouter.patch('/me', auth, async (request, response) => {
   const updateUserController = makeUpdateUserById();
 
   const { statusCode, body } = await updateUserController.execute({
@@ -62,7 +62,7 @@ userRouter.patch('/', auth, async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.delete('/', auth, async (request, response) => {
+userRouter.delete('/me', auth, async (request, response) => {
   const deleteUserController = makeDeleteUserById();
 
   const { statusCode, body } = await deleteUserController.execute({
