@@ -83,7 +83,7 @@ describe('User Routers E2E tests', () => {
       .send({ ...user, id: undefined });
 
     await request(app)
-      .post('/api/transactions')
+      .post('/api/transactions/me')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send({
         user_id: createdUser.id,
@@ -94,7 +94,7 @@ describe('User Routers E2E tests', () => {
       });
 
     await request(app)
-      .post('/api/transactions')
+      .post('/api/transactions/me')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send({
         user_id: createdUser.id,
@@ -105,7 +105,7 @@ describe('User Routers E2E tests', () => {
       });
 
     await request(app)
-      .post('/api/transactions')
+      .post('/api/transactions/me')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send({
         user_id: createdUser.id,
