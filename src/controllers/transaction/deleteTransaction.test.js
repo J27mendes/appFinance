@@ -29,7 +29,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
+      },
     });
 
     //assert
@@ -45,12 +48,15 @@ describe('Delete Transaction Controller', () => {
     );
 
     const transactionId = faker.string.uuid();
+    const userId = faker.string.uuid();
 
     //act
-    await sut.execute({ params: { transactionId } });
+    await sut.execute({
+      params: { transactionId: transactionId, user_id: userId },
+    });
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(transactionId);
+    expect(executeSpy).toHaveBeenCalledWith(transactionId, userId);
   });
 
   it('should returns 400 if id is invalid', async () => {
@@ -58,7 +64,7 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: 'invalid_id' },
+      params: { transactionId: 'invalid_id', user_id: 'invalid_id' },
     });
 
     //assert
@@ -73,11 +79,15 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
+      },
     });
 
     //assert
     expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe('Transaction not found');
   });
 
   it('should returns 404 if transaction_id is not found', async () => {
@@ -90,7 +100,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
+      },
     });
 
     //assert
@@ -105,7 +118,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        userId: faker.string.uuid(),
+      },
     });
 
     //assert
@@ -117,7 +133,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const response = await sut.execute({
-      params: { transactionId: 'The provided id is not valid.' },
+      params: {
+        transactionId: 'The provided id is not valid.',
+        user_id: 'The provided id is not valid',
+      },
     });
 
     //assert
