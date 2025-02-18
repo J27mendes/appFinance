@@ -362,15 +362,6 @@
         "tags": ["Transaction"],
         "parameters": [
           {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "description": "The ID of the user.",
-            "schema": {
-              "$ref": "#/definitions/Transaction"
-            }
-          },
-          {
             "name": "from",
             "in": "query",
             "required": true,
