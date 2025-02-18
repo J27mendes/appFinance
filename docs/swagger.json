@@ -166,7 +166,7 @@
         ]
       }
     },
-    "/api/users/login": {
+    "/api/users/auth": {
       "post": {
         "summary": "Login user",
         "tags": ["User"],
@@ -214,7 +214,7 @@
         ]
       }
     },
-    "/api/users/refreshToken": {
+    "/api/users/authToken": {
       "post": {
         "summary": "Refresh User Token",
         "tags": ["User"],

@@ -75,7 +75,7 @@ userRouter.delete('/me', auth, async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.post('/login', async (request, response) => {
+userRouter.post('/auth', async (request, response) => {
   const loginUserController = makeLoginUserController();
 
   const { statusCode, body } = await loginUserController.execute(request);
@@ -83,7 +83,7 @@ userRouter.post('/login', async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.post('/refreshtoken', async (request, response) => {
+userRouter.post('/authtoken', async (request, response) => {
   const refreshTokenController = makeRefreshTokenController();
 
   const { statusCode, body } = await refreshTokenController.execute(request);

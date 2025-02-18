@@ -146,12 +146,12 @@ describe('User Routers E2E tests', () => {
     expect(response.status).toBe(400);
   });
 
-  it('POST /api/users/login should return 200 and tokens when user credentials are valid', async () => {
+  it('POST /api/users/auth should return 200 and tokens when user credentials are valid', async () => {
     const { body: createdUser } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
 
-    const response = await request(app).post('/api/users/login').send({
+    const response = await request(app).post('/api/users/auth').send({
       email: createdUser.email,
       password: user.password,
     });
@@ -161,7 +161,7 @@ describe('User Routers E2E tests', () => {
     expect(response.body.tokens.refreshToken).toBeDefined();
   });
 
-  it('POST /api/users/refreshtoken should return 200 and new tokens when refresh token is valid', async () => {
+  it('POST /api/users/authtoken should return 200 and new tokens when refresh token is valid', async () => {
     //arrange
     const { body: createdUser } = await request(app)
       .post('/api/users')
@@ -171,7 +171,7 @@ describe('User Routers E2E tests', () => {
       });
 
     //act
-    const response = await request(app).post('/api/users/refreshtoken').send({
+    const response = await request(app).post('/api/users/authtoken').send({
       refreshToken: createdUser.tokens.refreshToken,
     });
 
