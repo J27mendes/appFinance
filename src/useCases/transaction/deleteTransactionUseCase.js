@@ -1,16 +1,26 @@
-import { TransactionNotFoundError } from '../../errors/transactionNotFoundError.js';
+import {
+  TransactionNotFoundError,
+  ForbiddenError,
+} from '../../errors/index.js';
 
 export class DeleteTransactionUseCase {
-  constructor(deleteTransactionRepository) {
+  constructor(deleteTransactionRepository, getTransactionByIdRepository) {
+    this.getTransactionByIdRepository = getTransactionByIdRepository;
     this.deleteTransactionRepository = deleteTransactionRepository;
   }
 
-  async execute(transactionId) {
-    const deletedTransaction =
-      await this.deleteTransactionRepository.execute(transactionId);
-    if (!deletedTransaction) {
+  async execute(transactionId, userId) {
+    const transaction =
+      await this.getTransactionByIdRepository.execute(transactionId);
+
+    if (!transaction) {
       throw new TransactionNotFoundError(transactionId);
     }
+    if (transaction.user_id !== userId) {
+      throw new ForbiddenError();
+    }
+    const deletedTransaction =
+      await this.deleteTransactionRepository.execute(transactionId);
     return deletedTransaction;
   }
 }

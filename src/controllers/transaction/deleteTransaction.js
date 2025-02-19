@@ -36,10 +36,7 @@ export class DeleteTransactionController {
         });
       }
 
-      return ok({
-        message: 'Transaction deleted successfully',
-        transaction: deletedTransaction,
-      });
+      return ok(deletedTransaction);
     } catch (error) {
       if (error instanceof TransactionNotFoundError) {
         return transactionNotFoundResponse(httpRequest.params.transactionId);
