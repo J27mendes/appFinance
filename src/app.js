@@ -1,6 +1,8 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import cors from 'cors';
+import 'dotenv/config.js';
 import { userRouter, transactionsRouter } from './routes/index.js';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
@@ -9,6 +11,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CORS || '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
 
 app.use(express.json());
 
