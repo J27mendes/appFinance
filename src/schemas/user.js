@@ -62,7 +62,6 @@ export const refreshTokenSchema = z.object({
 });
 
 export const getUserBalanceSchema = z.object({
-  user_id: z.string().uuid(),
   from: z
     .string()
     .refine((val) => !isNaN(Date.parse(val)), {
