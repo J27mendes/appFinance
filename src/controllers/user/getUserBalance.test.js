@@ -53,18 +53,16 @@ describe('GetUserBalanceController', () => {
     );
   });
 
-  it('Should return 400 if id is not valid', async () => {
-    //arrange
+  it('Should return 400 if "from" and "to" date is invalid', async () => {
     const { sut } = makeSut();
 
-    //act
     const result = await sut.execute({
-      params: { userId: 'id_invalid' },
-      query: { from: '2024-01-02', to: '2024-01-22' },
+      params: { userId: faker.string.uuid() },
+      query: { from: 'invalid_date', to: 'invalid_date' },
     });
 
-    //assert
     expect(result.statusCode).toBe(400);
+    expect(result.body.message).toContain('Invalid');
   });
 
   it('Should return 404 if id user is not found', async () => {
